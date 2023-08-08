@@ -11,6 +11,7 @@ export const login = async (username, password) => {
         const resp = await Axios.post("/korisnici/auth", body)
         const decoded_jwt = jwt_decode(resp.data)
         window.localStorage.setItem("jwt", resp.data)
+        window.localStorage.setItem("korisnikId", decoded_jwt.korisnikId)
         window.localStorage.setItem("role", decoded_jwt.role.authority)
         window.location.replace("http://localhost:3000")
     } catch (e) {

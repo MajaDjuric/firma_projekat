@@ -64,7 +64,7 @@ const IzmenaTrebovanja = () => {
                 console.log(error);
                 alert('Doslo je do greske, pokusajte ponovo!');
             });
-    } 
+    }
 
 
     const deleteTrebovanje = (id) => {
@@ -154,14 +154,13 @@ const IzmenaTrebovanja = () => {
             return (
                 <tr key={trebovanjeRobe.id} >
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{index + 1}</td>
-                    <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{index + 1}</td>
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaNaziv}</td>
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaPakovanje}</td>
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaJedinicaMere}</td>
                     {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}><Form.Control style={{ width: 120 }} placeholder={trebovanjeRobe.kolicina}
                         name="kolicina" type="number" onChange={(e) => kolicinaOnChange(e)} /></td> : <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.kolicina}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td><Button variant="warning" onClick={() => izmeni(trebovanjeRobe.id)}>Izmeni</Button></td> : null}
-                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td><Button variant="danger" onClick={() => deleteTrebovanje(trebovanjeRobe.id)}>Obrisi</Button></td> : null}
+                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td><Button variant="warning" disabled={trebovanjeRobe.disponirano} onClick={() => izmeni(trebovanjeRobe.id)}>Izmeni</Button></td> : null}
+                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td><Button variant="danger" disabled={trebovanjeRobe.disponirano} onClick={() => deleteTrebovanje(trebovanjeRobe.id)}>Obrisi</Button></td> : null}
                     {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && trebovanjeRobe.disponirano == false && dispozicijaId !== 'undefined' ? <td><FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> : null}
 
                 </tr>
@@ -215,7 +214,7 @@ const IzmenaTrebovanja = () => {
             <Row>
                 <Col></Col>
                 <Col xs="12" sm="10" md="8">
-                    <br /> {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <Col ><Dopuna svaTrebovanjaRobeIds={svaTrebovanjaRobeIds} trebovanjeId={trebovanjeId}></Dopuna></Col> : null}
+                    <br /> {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanje.disponirano ? <Col ><Dopuna svaTrebovanjaRobeIds={svaTrebovanjaRobeIds} trebovanjeId={trebovanjeId}></Dopuna></Col> : null}
                 </Col>
                 <Col></Col>
             </Row>
@@ -224,8 +223,8 @@ const IzmenaTrebovanja = () => {
                 <Col></Col>
                 <Col xs="12" sm="10" md="8">
                     <br />
-                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <Button variant="danger" onClick={() => deleteTrebovanja(trebovanjeId)} >Obrisi trebovanje</Button> : null}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <Button variant="success" onClick={() => dodajTrebovanje()}>Dodaj u dispoziciju</Button> : null}
+                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanje.disponirano ? <Button variant="danger" onClick={() => deleteTrebovanja(trebovanjeId)} >Obrisi trebovanje</Button> : null}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && !trebovanje.disponirano ? <Button variant="success" disabled={trebovanjaRobe.length == 0} onClick={() => dodajTrebovanje()}>Dodaj u dispoziciju</Button> : null}
                 </Col>
                 <Col></Col>
             </Row>

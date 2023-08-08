@@ -9,21 +9,23 @@ const Trebovanja = () => {
 
     const dispozicijaId = params.id
 
+    const korisnikId = window.localStorage.getItem('korisnikId')
+    const uloga = window.localStorage.getItem('role')
+
     //navigate
     const navigate = useNavigate()
 
     //state
     const [trebovanja, setTrebovanja] = useState([])
-    const [komercijala, setKomercijala] = useState([])
-
+    const [roba, setRoba] = useState([])
     const [kupci, setKupci] = useState([])
     const [pageNo, setPageNo] = useState(0)
     const [totalPage, setTotalPage] = useState(0)
     const [hidden, setHidden] = useState(false)
     const [parametriPretrage, setParametriPretrage] = useState({
         teren: '',
-        komercijalistaId: '',
-        kupacId: ''
+        kupacId: '',
+        robaId: ''
     })
 
     //dobavljanje svih
@@ -32,9 +34,13 @@ const Trebovanja = () => {
         const config = {
             params: {
                 teren: parametriPretrage.teren,
-                komercijalistaId: parametriPretrage.komercijalistaId,
-                kupacId: parametriPretrage.kupacId
+                kupacId: parametriPretrage.kupacId,
+                robaId: parametriPretrage.robaId
             }
+        }
+
+        if (window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA') {
+            config.params.komercijalistaId = window.localStorage.getItem('korisnikId')
         }
 
         Axios.get('/trebovanja', config)
@@ -51,12 +57,11 @@ const Trebovanja = () => {
             });
     }, []);
 
-
-    const getKomercijala = useCallback(() => {
-        Axios.get('/korisnici/komercijala')
+    const getRoba = useCallback(() => {
+        Axios.get('/roba')
             .then(res => {
                 console.log(res);
-                setKomercijala(res.data)
+                setRoba(res.data)
             })
             .catch(error => {
                 console.log(error);
@@ -64,25 +69,35 @@ const Trebovanja = () => {
             });
     }, []);
 
-
-
     const getKupci = useCallback(() => {
-        Axios.get('/kupci')
-            .then(res => {
-                console.log(res);
-                setKupci(res.data)
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske!')
-            });
+        if (window.localStorage.getItem('role' == 'ROLE_KOMERCIJALA')) {
+            Axios.get('/kupci/' + window.localStorage.getItem('korisnikId') + '/komercijala')
+                .then(res => {
+                    console.log(res);
+                    setKupci(res.data)
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert('Doslo je do greske!')
+                });
+        } else {
+            Axios.get('/kupci')
+                .then(res => {
+                    console.log(res);
+                    setKupci(res.data)
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert('Doslo je do greske!')
+                });
+        }
     }, []);
 
 
     useEffect(() => {
         getKupci()
-        getKomercijala()
         getTrebovanja(0)
+        getRoba()
     }, [])
 
 
@@ -99,23 +114,13 @@ const Trebovanja = () => {
         return trebovanja.map((trebovanje) => {
             return (
                 <tr key={trebovanje.id}>
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.id}</td> : <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.id}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.teren}</td> : <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.teren}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.komercijalistaIme}</td> : <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.komercijalistaIme} {trebovanje.komercijlistaPrezime}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.naziv}</td> : <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.naziv}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td> : <td onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td>}
-                    <td><FormCheck defaultChecked={trebovanje.disponirano} ></FormCheck></td>
-                    <td><FormCheck defaultChecked={trebovanje.isporuceno} ></FormCheck></td>
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.id}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.id}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.teren}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.teren}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.komercijalistaIme}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.komercijalistaIme} {trebovanje.komercijlistaPrezime}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.naziv}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.naziv}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td>}
+                    {!trebovanje.isporuceno ? <td><FormCheck defaultChecked={trebovanje.disponirano} ></FormCheck></td> : null}
                 </tr>
-            )
-        })
-    }
-
-    //ispis za select
-    const komercijalaSelect = () => {
-        return komercijala.map(komercijalista => {
-            return (
-                <option key={komercijalista.id} value={komercijalista.id}>{komercijalista.ime}  {komercijalista.prezime}</option>
             )
         })
     }
@@ -124,6 +129,14 @@ const Trebovanja = () => {
         return kupci.map(kupac => {
             return (
                 <option key={kupac.id} value={kupac.id}>{kupac.naziv}</option>
+            )
+        })
+    }
+
+    const robaSelect = () => {
+        return roba.map(proizvod => {
+            return (
+                <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere} {proizvod.tretman}</option>
             )
         })
     }
@@ -165,19 +178,19 @@ const Trebovanja = () => {
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Label>Komercijalista</Form.Label>
-                            <Form.Select name="komercijalistaId" onChange={(e) => onInputChange(e)}>
+                            <Form.Label>Kupac</Form.Label>
+                            <Form.Select name="kupacId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
-                                {komercijalaSelect()}
+                                {kupciSelect()}
                             </Form.Select>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Label>Kupac</Form.Label>
-                            <Form.Select name="kupacId" onChange={(e) => onInputChange(e)}>
+                            <Form.Label>Roba</Form.Label>
+                            <Form.Select name="robaId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
-                                {kupciSelect()}
+                                {robaSelect()}
                             </Form.Select>
                         </Col>
                     </Row>
@@ -216,7 +229,6 @@ const Trebovanja = () => {
                             <th>Kupac</th>
                             <th>Datum trebovanja</th>
                             <th>Disponirano</th>
-                            <th>Isporuceno</th>
                             <th></th>
                         </tr>
                     </thead>

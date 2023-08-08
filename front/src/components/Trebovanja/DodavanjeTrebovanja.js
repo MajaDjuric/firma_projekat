@@ -12,7 +12,7 @@ const DodavanjeTrebovanja = () => {
 
     const initTrebovanje = {
         kupacDto: { id: '' },
-        komercijalistaId: ''
+        komercijalistaId: window.localStorage.getItem('korisnikId')
     }
 
     const initTrebovanjeRobe = {
@@ -35,6 +35,7 @@ const DodavanjeTrebovanja = () => {
     const [listaRobe, setListaRobe] = useState([])
     const [roba, setRoba] = useState([])
     const [kupci, setKupci] = useState([])
+    const [stanje, setStanje] = useState(0)
     const [komercijalisti, setKomercijalisti] = useState([])
     const [hidden, setHidden] = useState(false)
     const [hiddenTabela, setHiddenTabela] = useState(false)
@@ -61,6 +62,18 @@ const DodavanjeTrebovanja = () => {
             .then(res => {
                 console.log(res);
                 setTrebovanaRoba(res.data)
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Doslo je do greske!')
+            });
+    }, []);
+
+    const getTrebovaniProizvod = useCallback((id) => {
+        Axios.get('/roba/' + id)
+            .then(res => {
+                console.log(res);
+                setStanje(res.data.stanje)
             })
             .catch(error => {
                 console.log(error);
@@ -137,7 +150,7 @@ const DodavanjeTrebovanja = () => {
 
 
     const getKupci = useCallback((komercijalistaId) => {
-        Axios.get('/kupci/' + komercijalistaId + '/komercijala')
+        Axios.get('/kupci/' + window.localStorage.getItem('korisnikId') + '/komercijala')
             .then(res => {
                 console.log(res);
                 setKupci(res.data)
@@ -162,6 +175,7 @@ const DodavanjeTrebovanja = () => {
 
     useEffect(() => {
         getRoba()
+        getKupci()
         getKomercijala()
     }, [])
 
@@ -172,7 +186,7 @@ const DodavanjeTrebovanja = () => {
                 proizvod.stanje === 0 ? (
                     <option style={{ color: "red" }} key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere}</option>
                 ) : (
-                    <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere}</option>
+                    <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere} {proizvod.tretman}</option>
                 )
             );
         });
@@ -201,14 +215,6 @@ const DodavanjeTrebovanja = () => {
     }
 
 
-    const komercijalaSelect = () => {
-        return komercijalisti.map(komercijalista => {
-            return (
-                <option key={komercijalista.id} value={komercijalista.id}>{komercijalista.ime} {komercijalista.prezime}</option>
-            )
-        })
-    }
-
     //validacija
     // const validiraj = () => {
     //     if (vino.ime == '' || vino.opis == '') {
@@ -230,14 +236,18 @@ const DodavanjeTrebovanja = () => {
         // validiraj()
     }
 
-    const komercijalistaInputValueChange = (e) => {
-        let komercijalistaId = e.target.value
-        setTrebovanje({ ...trebovanje, komercijalistaId })
-        getKupci(komercijalistaId)
-        console.log(trebovanje)
+    const trebovanjeRobeInputValueChange = (e) => {
+        let input = e.target
+        let name = input.name
+        let value = input.value
+        let trebovanjeRobeCopy = trebovanjeRobe
+        trebovanjeRobeCopy[name] = value
+        setTrebovanjeRobe(trebovanjeRobeCopy)
+        getTrebovaniProizvod(e.target.value)
+        // validiraj()
     }
 
-    const trebovanjeRobeInputValueChange = (e) => {
+    const kolicinaTrebovaneRobeInputValueChange = (e) => {
         let input = e.target
         let name = input.name
         let value = input.value
@@ -264,11 +274,6 @@ const DodavanjeTrebovanja = () => {
                     <br /><br />
                     <Row>
                         <Col>
-                            <Form.Label htmlFor="komercijalistaId">Komercijalista</Form.Label>
-                            <Form.Select name="komercijalistaId" onChange={(e) => komercijalistaInputValueChange(e)}>
-                                <option value={""}></option>
-                                {komercijalaSelect()}
-                            </Form.Select>
                             <Form.Label htmlFor="kupacId">Kupac</Form.Label>
                             <Form.Select name="kupacId" onChange={(e) => inputValueChange(e)}>
                                 <option value={""}></option>
@@ -288,7 +293,7 @@ const DodavanjeTrebovanja = () => {
                                 {robaSelect()}
                             </Form.Select>
                             <Form.Label htmlFor="kolicina">Kolicina</Form.Label>
-                            <Form.Control name="kolicina" id="kolicina" type="number" onChange={(e) => trebovanjeRobeInputValueChange(e)} />
+                            <Form.Control name="kolicina" id="kolicina" placeholder={stanje} type="number" onChange={(e) => kolicinaTrebovaneRobeInputValueChange(e)} />
 
                             <br /> <Button onClick={dodajTrebovanejRobe}>  Dodaj </Button>
                         </Col>

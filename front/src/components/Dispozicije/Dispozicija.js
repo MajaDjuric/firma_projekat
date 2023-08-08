@@ -1,4 +1,4 @@
-import Axios from '../../apis/Axios';datum
+import Axios from '../../apis/Axios';
 import React, { useCallback, useEffect, useState } from "react"
 import { Button, Col, Form, Row, Table, FormCheck } from "react-bootstrap"
 import { useNavigate, useParams } from 'react-router-dom';
@@ -78,6 +78,13 @@ const Dispozicija = () => {
             });
     }
 
+    const formatirajDatum = (datumParam) => {
+        let datum = new Date(datumParam)
+        let dan = datum.getDate()
+        let mesec = datum.getMonth() + 1
+        let godina = datum.getFullYear()
+        return (dan <= 9 ? '0' + dan : dan) + '.' + (mesec <= 9 ? '0' + mesec : mesec) + '.' + godina + '.'
+    }
 
     const trebovanjaInputChange = (e) => {
         const newTrebovanjeId = e.target.value;
@@ -107,7 +114,9 @@ const Dispozicija = () => {
                     {isUniqueKupac && (
 
                         <thead>
-                            <br />
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
                             <tr>
                                 <td colSpan="5" style={{ color: "blue" }}>
                                     {trebovanjeRobe.kupac.naziv} &nbsp;&nbsp;&nbsp;&nbsp; {trebovanjeRobe.kupac.grad} &nbsp;&nbsp;&nbsp;&nbsp; {trebovanjeRobe.kupac.adresa}
@@ -119,22 +128,18 @@ const Dispozicija = () => {
                                 <th>Pakovanje</th>
                                 <th>Jedinica mere</th>
                                 <th>Kolicina</th>
-                                <th>Isporuceno</th>
                             </tr>
                         </thead>
 
                     )}
                     <tbody>
                         <tr>
-                            <td>{index + 1}</td>
-                            <td>{trebovanjeRobe.robaNaziv}</td>
-                            <td>{trebovanjeRobe.robaPakovanje}</td>
-                            <td>{trebovanjeRobe.robaJedinicaMere}</td>
-                            <td>{trebovanjeRobe.kolicina}</td>
-                            {window.localStorage.getItem('role') == 'ROLE_MAGACIN' ? <td><FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> :
-                                <td><FormCheck defaultChecked={trebovanjeRobe.isporuceno}></FormCheck></td>}
-
-
+                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{index + 1}</td>
+                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaNaziv}</td>
+                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaPakovanje}</td>
+                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaJedinicaMere}</td>
+                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.kolicina}</td>
+                            {window.localStorage.getItem('role') == 'ROLE_MAGACIN' && !trebovanjeRobe.isporuceno ? <td><FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> : null}
                         </tr>
                     </tbody>
                 </React.Fragment>
@@ -146,12 +151,11 @@ const Dispozicija = () => {
     //krajnji ispis
     return (
         <Col>
-            {/* <Row><h1>Vina</h1></Row> */}
 
             <br /><br />
             <Row><Col>
 
-                {/* <h1>Broj fakture: {ulaz.brojFakture}</h1> */}
+                <h5>{formatirajDatum(dispozicija.datumIsporuke)}</h5>
 
                 <p>
                     Vozac: {dispozicija.vozacImeIPrezime}<br />

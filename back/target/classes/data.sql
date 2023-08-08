@@ -13,7 +13,9 @@ INSERT INTO korisnik (id, e_mail, ime, korisnicko_ime, lozinka, prezime, teren, 
 	VALUES(6, 'milan@nsagro.com', 'Milan', 'milan', '$2a$12$aZs6CeCpxO1J8Zp58tVlWe3CflrgWXxviV717M0uMAlKFTSAsjp3W', 'Milosevic', null, 'VOZAC');
 INSERT INTO korisnik (id, e_mail, ime, korisnicko_ime, lozinka, prezime, teren, uloga)
 	VALUES(7, 'magacin@nsagro.com', 'Miljana', 'miljana', '$2a$12$WGtsEWoAKFczq0j5KY8Ny.i8AtdyouWzi1IFkmGYRu0RW0yJzNJIG', 'Jovic', null, 'MAGACIN');
-
+INSERT INTO korisnik (id, e_mail, ime, korisnicko_ime, lozinka, prezime, teren, uloga)
+	VALUES(8, 'radmila@nsagro.com', 'Radmila', 'radmila', '$2a$12$9CVx1ENFncGAT/D7iC6gyetd5fO3mw6CyW68WZ3TbGegbnLoH1M3e', 'Buha', null, 'FINANSIJE');
+	
 INSERT INTO vrsta_robe (id, naziv, pdv) VALUES (1, 'PESTICIDI', 15);
 INSERT INTO vrsta_robe (id, naziv, pdv) VALUES (2, 'SEMENA', 10);
 INSERT INTO vrsta_robe (id, naziv, pdv) VALUES (3, 'DJUBRIVA', 10);
@@ -47,13 +49,15 @@ INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (2, 3);
 INSERT INTO trebovanje (id, komercijalista_id, kupac_id, disponirano, isporuceno, datum_trebovanja) VALUES (1, 1, 1, false, false, '2023-07-12');
 INSERT INTO trebovanje (id, komercijalista_id, kupac_id, disponirano, isporuceno, datum_trebovanja) VALUES (2, 1, 2, false, false, '2023-07-05');
 
-INSERT INTO trebovanje_roba (trebovanje_id, roba_id) VALUES (1, 1);
-INSERT INTO trebovanje_roba (trebovanje_id, roba_id) VALUES (1, 2);
-INSERT INTO trebovanje_roba (trebovanje_id, roba_id) VALUES (2, 2);
---
+INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (1, 1);
+INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (1, 2); 
+INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (2, 2);
+INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (2, 3);
+
 INSERT INTO trebovanje_robe (id, kolicina, roba_id, trebovanje_id, disponirano, isporuceno) VALUES (1, 4, 1, 1, false, false);
 INSERT INTO trebovanje_robe (id, kolicina, roba_id, trebovanje_id, disponirano, isporuceno) VALUES (2, 2, 2, 1, false, false);
 INSERT INTO trebovanje_robe (id, kolicina, roba_id, trebovanje_id, disponirano, isporuceno) VALUES (3, 10, 2, 2, false, false);
+INSERT INTO trebovanje_robe (id, kolicina, roba_id, trebovanje_id, disponirano, isporuceno) VALUES (4, 2, 3, 2, false, false);
 
 INSERT INTO vozilo (id, markaitip, registracija) VALUES (1, 'Mercedes Atego ', 'NS-547-JZ');
 INSERT INTO vozilo (id, markaitip, registracija) VALUES (2, 'Mercedes Atego 2', 'NS-874-MA');

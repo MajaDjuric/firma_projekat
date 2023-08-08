@@ -92,7 +92,7 @@ const Dopuna = (props) => {
     const robaSelect = () => {
         return roba.map(proizvod => {
             return (
-                <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere}</option>
+                <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere} {proizvod.tretman}</option>
             )
         })
     }

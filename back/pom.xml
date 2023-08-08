@@ -14,8 +14,8 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>JWD64</groupId>
-	<artifactId>Test</artifactId>
+	<groupId>Projekat</groupId>
+	<artifactId>Firma</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 		<packaging>jar</packaging>
 

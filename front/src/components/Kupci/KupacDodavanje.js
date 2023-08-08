@@ -16,14 +16,12 @@ const KupacDodavanje = () => {
         mb: '',
         adresa: '',
         grad: '',
-        teren: '',
-        komercijalistaId: ''
+        teren: ''
     }
 
     //init
 
     const [kupac, setKupac] = useState([init])
-    const [komercijalisti, setKomercijalisti] = useState([init])
     const [validno, setValidno] = useState(false)
 
     //dodavanje 
@@ -36,7 +34,7 @@ const KupacDodavanje = () => {
             adresa: kupac.adresa,
             grad: kupac.grad,
             teren: kupac.teren,
-            komercijalistaId: kupac.komercijalistaId
+            komercijalistaId: window.localStorage.getItem('korisnikId')
         }
 
         Axios.post('/kupci', dto)
@@ -50,32 +48,6 @@ const KupacDodavanje = () => {
                 alert('Doslo je do greske, pokusajte ponovo!')
             })
     }
-
-    const getKomercijalisti = () => {
-
-        Axios.get('/korisnici/komercijala')
-            .then(res => {
-                console.log(res)
-                setKomercijalisti(res.data)
-            })
-            .catch(error => {
-                console.log(error)
-                alert('Doslo je do greske, pokusajte ponovo!')
-            })
-    }
-
-    useEffect(() => {
-        getKomercijalisti()
-    }, [])
-
-    const komercijalaSelect = () => {
-        return komercijalisti.map(komercijalista => {
-            return (
-                <option key={komercijalista.id} value={komercijalista.id}>{komercijalista.ime} {komercijalista.prezime}</option>
-            )
-        })
-    }
-
 
     //validacija
     // const validiraj = () => {
@@ -96,21 +68,6 @@ const KupacDodavanje = () => {
         setKupac(kupacCopy)
         // validiraj()
     }
-
-
-    // const ispisListe = () => {
-    //     return noviUlazi.map((ulaz, index) => {
-    //         return (
-    //             <tr>
-    //                 <td>{index + 1}</td>
-    //                 <td>{ulaz.naziv}</td>
-    //                 <td>{ulaz.pakovanje}</td>
-    //                 <td>{ulaz.jedinicaMere}</td>
-    //                 <td>{ulaz.kolicina}</td>
-    //             </tr>
-    //         )
-    //     })
-    // }
 
     return (
         <>
@@ -137,21 +94,13 @@ const KupacDodavanje = () => {
                             <option value={"Srem"}>Srem</option>
                             <option value={"Centralna Srbija"}>Centralna Srbija</option>
                         </Form.Select>
-                        <Form.Label htmlFor="komercijalistaId">Komercijalista</Form.Label>
-                        <Form.Select name="komercijalistaId" onChange={(e) => inputValueChange(e)}>
-                            <option value={""}></option>
-                            {komercijalaSelect()}
-                        </Form.Select>
                         <br /> <Button onClick={dodaj}> Dodaj kupca</Button>
                     </Col>
                 </Row>
-
             </Form>
             <br />
-
         </>
     )
 }
-
 
 export default KupacDodavanje

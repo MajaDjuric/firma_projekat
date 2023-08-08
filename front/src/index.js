@@ -72,15 +72,12 @@ const App = () => {
             JWD64
         </Navbar.Brand> */}
             <Nav>
-              <Nav.Link as={Link} to="/roba">Roba</Nav.Link>
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <Nav.Link></Nav.Link>
             </Nav>
           </Navbar>
           <Container style={{ paddingTop: "25px" }}>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/roba" element={<Roba />} />
+              <Route path="/" element={<Login />} />
               <Route path="*" element={<Navigate replace to="/login" />} />
             </Routes>
           </Container>

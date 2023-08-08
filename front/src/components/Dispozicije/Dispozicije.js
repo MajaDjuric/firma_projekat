@@ -132,7 +132,11 @@ const Dispozicije = () => {
                             <td><FormCheck style={{ display: "flex", justifyContent: "center" }} defaultChecked={dispozicija.isporuceno}></FormCheck></td>
                             <td><Button variant='success' onClick={() => navigate('/dispozicija/' + dispozicija.id)}>Detaljnije</Button></td>
                             <td><Button variant='primary' disabled={dispozicija.isporuceno} onClick={() => navigate('/trebovanja/' + dispozicija.id)}>Dodaj trebovanja</Button></td>
-                        </>) : null
+                        </>) :
+                        (<>
+                            <td><FormCheck style={{ display: "flex", justifyContent: "center" }} defaultChecked={dispozicija.isporuceno}></FormCheck></td>
+                            <td><Button variant='success' onClick={() => navigate('/dispozicija/' + dispozicija.id)}>Detaljnije</Button></td>
+                        </>)
                     }
                 </tr>
             )
