@@ -114,12 +114,12 @@ const Trebovanja = () => {
         return trebovanja.map((trebovanje) => {
             return (
                 <tr key={trebovanje.id}>
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.id}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.id}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.teren}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.teren}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.komercijalistaIme}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.komercijalistaIme} {trebovanje.komercijlistaPrezime}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.naziv}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.naziv}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => navigate('/trebovanje/izmena/' + trebovanje.id)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td>}
-                    {!trebovanje.isporuceno ? <td><FormCheck defaultChecked={trebovanje.disponirano} ></FormCheck></td> : null}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.id}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.id}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.teren}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.teren}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.komercijalistaIme}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.komercijalistaIme} {trebovanje.komercijlistaPrezime}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.naziv}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.naziv}</td>}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td>}
+                    <td><FormCheck defaultChecked={trebovanje.isporuceno} ></FormCheck></td>
                 </tr>
             )
         })
@@ -161,9 +161,6 @@ const Trebovanja = () => {
                     <Form.Check onChange={() => setHidden(!hidden)} ></Form.Check>
                     <Form.Label htmlFor='checkbox'> &nbsp; Prikazi pretragu</Form.Label>
                 </div>
-
-                {/* <Form  hidden={!hidden} > */}
-                {/* ako hocu obrnuto sklonim ! */}
 
                 <Form hidden={!hidden}>
                     <Row>

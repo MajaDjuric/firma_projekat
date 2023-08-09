@@ -67,14 +67,6 @@ const App = () => {
     return (
       <>
         <Router>
-          <Navbar expand bg="dark" variant="dark">
-            {/* <Navbar.Brand as={Link} to="/">
-            JWD64
-        </Navbar.Brand> */}
-            <Nav>
-              <Nav.Link></Nav.Link>
-            </Nav>
-          </Navbar>
           <Container style={{ paddingTop: "25px" }}>
             <Routes>
               <Route path="/" element={<Login />} />

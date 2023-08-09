@@ -25,6 +25,7 @@ const IzmenaTrebovanja = () => {
     const [trebovanje, setTrebovanje] = useState(trebovanjeInit)
     const [kolicina, setKolicina] = useState(0)
     const [trebovanjaRobeIds, setTrebovanjaRobeIds] = useState([])
+    const [izmenaButton, setIzmenaButton] = useState(false)
     const [svaTrebovanjaRobeIds, setSvaTrebovanjaRobeIds] = useState([]) //props za dopunu
     const [validno, setValidno] = useState(false)
 
@@ -133,6 +134,7 @@ const IzmenaTrebovanja = () => {
     //onChange
     const kolicinaOnChange = (e) => {
         setKolicina(e.target.value)
+        setIzmenaButton(true)
     }
 
 
@@ -152,18 +154,27 @@ const IzmenaTrebovanja = () => {
     const renderTrebovanjaRobe = () => {
         return trebovanjaRobe.map((trebovanjeRobe, index) => {
             return (
-                <tr key={trebovanjeRobe.id} >
+                <tr onClick={() => trebovanjeRobe.disponirano ? window.open('/#/dispozicija/' + trebovanjeRobe.dispozicijaId) : null} key={trebovanjeRobe.id} >
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{index + 1}</td>
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaNaziv}</td>
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaPakovanje}</td>
                     <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaJedinicaMere}</td>
-                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}><Form.Control style={{ width: 120 }} placeholder={trebovanjeRobe.kolicina}
-                        name="kolicina" type="number" onChange={(e) => kolicinaOnChange(e)} /></td> : <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.kolicina}</td>}
-                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td><Button variant="warning" disabled={trebovanjeRobe.disponirano} onClick={() => izmeni(trebovanjeRobe.id)}>Izmeni</Button></td> : null}
-                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td><Button variant="danger" disabled={trebovanjeRobe.disponirano} onClick={() => deleteTrebovanje(trebovanjeRobe.id)}>Obrisi</Button></td> : null}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && trebovanjeRobe.disponirano == false && dispozicijaId !== 'undefined' ? <td><FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> : null}
+                    {
+                        window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanjeRobe.disponirano ? <td><Form.Control style={{ width: 120 }} placeholder={trebovanjeRobe.kolicina}
+                            name="kolicina" type="number" onChange={(e) => kolicinaOnChange(e)} /></td> : <td style={trebovanjeRobe.disponirano ? { color: 'red' } : {}}  > {trebovanjeRobe.kolicina}</td>
+                    }
 
-                </tr>
+                    {
+                        window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanjeRobe.disponirano ?
+                            (<> <td><Button style={{ marginRight: '10px' }} variant="warning" disabled={!izmenaButton} onClick={() => izmeni(trebovanjeRobe.id)}>Izmeni</Button>
+                                <Button variant="danger" onClick={() => deleteTrebovanje(trebovanjeRobe.id)}>Obrisi</Button></td>
+                            </>) : null
+                    }
+                    {
+                        window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && !trebovanjeRobe.disponirano ? < td > <FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> : null
+                    }
+                    {/* {trebovanjeRobe.disponirano ? <td> <Button variant="success" onClick={() => navigate('/dispozicija/' + trebovanjeRobe.dispozicijaId)} >Pogledaj dispoziciju</Button></td> : null} */}
+                </tr >
             )
         })
     }
@@ -191,7 +202,6 @@ const IzmenaTrebovanja = () => {
                     {trebovanje.kupacDto.adresa}
                 </p>
 
-                <br /><br />
                 <Table style={{ marginTop: 5 }}>
                     <thead>
                         <tr>
@@ -212,8 +222,12 @@ const IzmenaTrebovanja = () => {
             <Col></Col>
 
             <Row>
+
                 <Col></Col>
+
                 <Col xs="12" sm="10" md="8">
+                    <br />  <br />
+                    {/* {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <h4>Dopuna trebovanja</h4> : null} */}
                     <br /> {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanje.disponirano ? <Col ><Dopuna svaTrebovanjaRobeIds={svaTrebovanjaRobeIds} trebovanjeId={trebovanjeId}></Dopuna></Col> : null}
                 </Col>
                 <Col></Col>

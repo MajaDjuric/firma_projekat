@@ -204,8 +204,27 @@ public class DispozicijaController {
 					Trebovanje updatedTrebovanje = trebovanjeService.update(trebovanje);
 				}
 			}
+			
+			dispozicija.setIsporuceno(true);
+			Dispozicija updatedDispozicija = dispozicijaService.update(dispozicija);
 			return new ResponseEntity<>(HttpStatus.OK);	
 		}
+	
+    @PreAuthorize("permitAll()")
+	@DeleteMapping(value = "/brisanjeTrebovanjaRobe/{id}")
+	public ResponseEntity<Void> deleteTrebovanjeRobeIzDispozicije (@PathVariable Long id){
+    	TrebovanjeRobe trebovanjeRobe = trebovanjeRobeService.findOne(id);
+    	if (trebovanjeRobe == null || trebovanjeRobe.getDispozicija() == null) {
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		Dispozicija dispozicija = trebovanjeRobe.getDispozicija();
+		dispozicija.getTrebovanjaRobe().remove(trebovanjeRobe);
+		trebovanjeRobe.setDisponirano(false);
+		trebovanjeRobe.setDispozicija(null);
+		TrebovanjeRobe updatedTrebovanjeRobe = trebovanjeRobeService.update(trebovanjeRobe);
+		Dispozicija updatedDispozicija = dispozicijaService.update(dispozicija);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 	
 	
 	public LocalDate getLocalDate (String datunString) {

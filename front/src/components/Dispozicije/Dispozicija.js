@@ -99,6 +99,28 @@ const Dispozicija = () => {
         console.log(trebovanjaRobeIds)
     }
 
+    const deleteTrebovanjeRobe = useCallback((trebovanjeRobeId) => {
+
+        Axios.delete('/dispozicije/brisanjeTrebovanjaRobe/' + trebovanjeRobeId)
+            .then(res => {
+                console.log(res);
+                window.location.reload()
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Doslo je do greske!')
+            });
+    }, []);
+
+    const ipsisCheckBoxIliBrisanje = (trebovanjeRobe) => {
+        if (!trebovanjeRobe.isporuceno && window.localStorage.getItem('role') == 'ROLE_MAGACIN') {
+            return <td><FormCheck style={{ display: "flex", justifyContent: "center" }} value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td>
+        } else if (trebovanjeRobe.isporuceno && (window.localStorage.getItem('role') == 'ROLE_MAGACIN' || window.localStorage.getItem('role') == 'ROLE_LOGISTIKA')) {
+            return <td><FormCheck style={{ display: "flex", justifyContent: "center" }} checked></FormCheck></td>
+        } else if (!dispozicija.isporuceno && window.localStorage.getItem('role') == 'ROLE_LOGISTIKA') {
+            return <td><Button variant='danger' onClick={() => deleteTrebovanjeRobe(trebovanjeRobe.id)} >Obrisi</Button></td>
+        }
+    }
 
     const trebovanjaRobeRender = () => {
         const uniqueKupci = new Set();
@@ -134,12 +156,12 @@ const Dispozicija = () => {
                     )}
                     <tbody>
                         <tr>
-                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{index + 1}</td>
-                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaNaziv}</td>
-                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaPakovanje}</td>
-                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaJedinicaMere}</td>
-                            <td style={trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.kolicina}</td>
-                            {window.localStorage.getItem('role') == 'ROLE_MAGACIN' && !trebovanjeRobe.isporuceno ? <td><FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> : null}
+                            <td style={!trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{index + 1}</td>
+                            <td style={!trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaNaziv}</td>
+                            <td style={!trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaPakovanje}</td>
+                            <td style={!trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.robaJedinicaMere}</td>
+                            <td style={!trebovanjeRobe.isporuceno ? { color: "red" } : {}}>{trebovanjeRobe.kolicina}</td>
+                            {ipsisCheckBoxIliBrisanje(trebovanjeRobe)}
                         </tr>
                     </tbody>
                 </React.Fragment>
@@ -162,7 +184,6 @@ const Dispozicija = () => {
                     Vozilo: {dispozicija.vozilo.markaITip}<br />
                     Registracija: {dispozicija.vozilo.registracija}
                 </p>
-                <br />
 
                 <Table style={{ marginTop: 5 }}>
                     {/* <tbody> */}

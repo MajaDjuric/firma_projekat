@@ -20,6 +20,7 @@ const Dispozicije = () => {
     const [pageNo, setPageNo] = useState(0)
     const [totalPage, setTotalPage] = useState(0)
     const [hidden, setHidden] = useState(false)
+    const [hiddenDodavanje, setHiddenDodavanje] = useState(false)
     const [vozaci, setVozaci] = useState([])
     const [vozila, setVozila] = useState([])
     const [parametriPretrage, setParametriPretrage] = useState({
@@ -135,7 +136,7 @@ const Dispozicije = () => {
                         </>) :
                         (<>
                             <td><FormCheck style={{ display: "flex", justifyContent: "center" }} defaultChecked={dispozicija.isporuceno}></FormCheck></td>
-                            <td><Button variant='success' onClick={() => navigate('/dispozicija/' + dispozicija.id)}>Detaljnije</Button></td>
+                            <td><Button variant='success' onClick={() => window.open('/#/dispozicija/' + dispozicija.id)}>Detaljnije</Button></td>
                         </>)
                     }
                 </tr>
@@ -189,7 +190,7 @@ const Dispozicije = () => {
     const dodavanjeDispozicije = () => {
         return (
             <>
-                <Form>
+                <Form hidden={!hiddenDodavanje}>
                     <Row>
                         <Col xs="12" sm="10" md="8">
                             <Form.Label>Datum isporuke</Form.Label>
@@ -216,7 +217,7 @@ const Dispozicije = () => {
                     </Row>
                     <br />
                     <Col xs="12" sm="10" md="8">
-                        <Button onClick={dodajDispoziciju}>Kreiraj dispoziciju</Button>
+                        <Button onClick={dodajDispoziciju}>Kreiraj</Button>
                     </Col>
                 </Form>
             </>
@@ -230,6 +231,7 @@ const Dispozicije = () => {
                 <Form>
                     <Row>
                         <Col>
+                            <h5>Pretraga</h5>
                             <Form.Label>Datum isporuke</Form.Label>
                             <Form.Control name="datumIsporuke" type='date' onChange={(e) => onInputChange(e)} />
                         </Col>
@@ -244,10 +246,13 @@ const Dispozicije = () => {
         <Col>
             {/* <Row><h1>Vina</h1></Row> */}
             <Row>
-                {renderPretraga()}
+                <Col xs="12" sm="10" md="8">
+                    {renderPretraga()}
+                </Col>
             </Row>
             <br /><br />
-            {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <Row> {dodavanjeDispozicije()} </Row> : null}
+            {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <Button onClick={() => setHiddenDodavanje(true)} hidden={hiddenDodavanje}>Kreiraj dispoziciju</Button> : null}
+            <Row> <Col></Col> <Col xs="12" sm="10" md="8"></Col>{dodavanjeDispozicije()} </Row>
             <br /><br />
             <Row><Col>
                 <Row>
