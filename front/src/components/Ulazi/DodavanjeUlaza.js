@@ -1,5 +1,5 @@
 
-import { Button, Col, Row, Form } from "react-bootstrap"
+import { Button, Col, Row, Form, Table } from "react-bootstrap"
 import Axios from "../../apis/Axios"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -17,12 +17,22 @@ const DodavanjeUlaza = () => {
         proizvodjacId: ''
     }
 
+    const initNoviUlaz = {
+        brojFakture: '',
+        brojOtpremnice: '',
+        datumUlaza: '',
+        proizvodjacId: ''
+    }
+
     //init
 
     const [ulaz, setUlaz] = useState([init])
+    const [noviUlaz, setNoviUlaz] = useState([initNoviUlaz])
     const [id, setId] = useState(0)
     const [proizvodjaci, setProizvodjaci] = useState([])
     const [validno, setValidno] = useState(false)
+    const [hiddenDodavanjeRobe, setHiddenDodavanjeRobe] = useState(false)
+    const [hiddenDodavanjeUlaza, setHiddenDodavanjeUlaza] = useState(false)
 
     //dodavanje 
     const dodaj = () => {
@@ -37,8 +47,10 @@ const DodavanjeUlaza = () => {
         Axios.post('/ulazi', dto)
             .then(res => {
                 console.log(res)
+                setHiddenDodavanjeRobe(true)
+                setHiddenDodavanjeUlaza(true)
                 setId(res.data.id)
-                alert('Uspesno dodavanje!')
+                getNoviUlaz(res.data.id)
             })
             .catch(error => {
                 console.log(error)
@@ -57,6 +69,18 @@ const DodavanjeUlaza = () => {
                 alert('Doslo je do greske!')
             });
     }, []);
+
+    const getNoviUlaz = (ulazId) => {
+        Axios.get('/ulazi/' + ulazId)
+            .then(res => {
+                console.log(res);
+                setNoviUlaz(res.data)
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Doslo je do greske!')
+            });
+    };
 
     useEffect(() => {
         getProizvodjaci()
@@ -92,44 +116,46 @@ const DodavanjeUlaza = () => {
         // validiraj()
     }
 
-
-    // const ispisListe = () => {
-    //     return noviUlazi.map((ulaz, index) => {
-    //         return (
-    //             <tr>
-    //                 <td>{index + 1}</td>
-    //                 <td>{ulaz.naziv}</td>
-    //                 <td>{ulaz.pakovanje}</td>
-    //                 <td>{ulaz.jedinicaMere}</td>
-    //                 <td>{ulaz.kolicina}</td>
-    //             </tr>
-    //         )
-    //     })
-    // }
+    const formatirajDatum = (datumParam) => {
+        let datum = new Date(datumParam)
+        let dan = datum.getDate()
+        let mesec = datum.getMonth() + 1
+        let godina = datum.getFullYear()
+        return (dan <= 9 ? '0' + dan : dan) + '.' + (mesec <= 9 ? '0' + mesec : mesec) + '.' + godina + '.'
+    }
 
     return (
         <>
-            <Form>
-                <Row>
-                    <Col>
-                        <Form.Label htmlFor="datumUlaza">Datum ulaza</Form.Label>
-                        <Form.Control name="datumUlaza" id="datumUlaza" type="date" onChange={(e) => inputValueChange(e)} />
-                        <Form.Label htmlFor="brojOtpremnice">Broj otpremnice </Form.Label>
-                        <Form.Control name="brojOtpremnice" id="brojOtpremnice" type="text" onChange={(e) => inputValueChange(e)} />
-                        <Form.Label htmlFor="brojFakture">Broj fakture</Form.Label>
-                        <Form.Control name="brojFakture" id="brojFakture" type="text" onChange={(e) => inputValueChange(e)} />
-                        <Form.Label htmlFor="proizvodjacId">Dobavljac</Form.Label>
-                        <Form.Select name="proizvodjacId" onChange={(e) => inputValueChange(e)}>
-                            <option value={""}></option>
-                            {proizvodjaciSelect()}
-                        </Form.Select>
-                        <br /> <Button onClick={dodaj}> Dodaj ulaz</Button>
-                    </Col>
-                </Row>
+            {hiddenDodavanjeUlaza == false ?
+                <Form>
+                    <Row>
+                        <Col xs="12" sm="10" md="8">
+                            <Form.Label htmlFor="datumUlaza">Datum ulaza</Form.Label>
+                            <Form.Control name="datumUlaza" id="datumUlaza" type="date" onChange={(e) => inputValueChange(e)} />
+                            <Form.Label htmlFor="brojOtpremnice">Broj otpremnice </Form.Label>
+                            <Form.Control name="brojOtpremnice" id="brojOtpremnice" type="text" onChange={(e) => inputValueChange(e)} />
+                            <Form.Label htmlFor="brojFakture">Broj fakture</Form.Label>
+                            <Form.Control name="brojFakture" id="brojFakture" type="text" onChange={(e) => inputValueChange(e)} />
+                            <Form.Label htmlFor="proizvodjacId">Dobavljac</Form.Label>
+                            <Form.Select name="proizvodjacId" onChange={(e) => inputValueChange(e)}>
+                                <option value={""}></option>
+                                {proizvodjaciSelect()}
+                            </Form.Select>
+                            <br /> <Button onClick={dodaj}> Dodaj ulaz</Button>
+                        </Col>
+                    </Row>
+                </Form> :
 
-            </Form>
+                <div>
+                    <p> Datum ulaza: {formatirajDatum(noviUlaz.datumUlaza)}</p>
+                    <p> Broj fakture: {noviUlaz.brojFakture}</p>
+                    <p> Broj otpremnice: {noviUlaz.brojOtpremnice}</p>
+                    <p> Dobavljac: {noviUlaz.proizvodjacNaziv}</p>
+                </div>
+            }
+
             <br />
-            <DodavanjeRobeUlaz idUlaza={id}></DodavanjeRobeUlaz>
+            {hiddenDodavanjeRobe == true ? <DodavanjeRobeUlaz idUlaza={id}></DodavanjeRobeUlaz> : null}
         </>
     )
 }

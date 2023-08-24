@@ -13,13 +13,13 @@ import Roba from "./components/Roba/Roba";
 import Ulazi from "./components/Ulazi/Ulazi";
 import DodavanjeRobeUlaz from "./components/Ulazi/DodavanjeRobeUlaz";
 import DodavanjeUlaza from "./components/Ulazi/DodavanjeUlaza";
-import Ulaz from "./components/Ulazi/Ulaz";
 import Trebovanja from "./components/Trebovanja/Trebovanja";
 import KupacDodavanje from "./components/Kupci/KupacDodavanje";
 import IzmenaTrebovanja from "./components/Trebovanja/TrebovanjeIzmena";
 import DodavanjeTrebovanja from "./components/Trebovanja/DodavanjeTrebovanja";
 import Dispozicije from "./components/Dispozicije/Dispozicije";
 import Dispozicija from "./components/Dispozicije/Dispozicija";
+import UlaziRobe from "./components/Ulazi/UlaziRobe";
 
 
 
@@ -50,7 +50,7 @@ const App = () => {
               <Route path="/trebovanje/dodavanje" element={<DodavanjeTrebovanja />} />
               <Route path="/trebovanje/izmena/:trebovanjeId" element={<IzmenaTrebovanja />} />
               <Route path="/trebovanje/izmena/:trebovanjeId/:dispozicijaId" element={<IzmenaTrebovanja />} />
-              <Route path="/ulaz/:id" element={<Ulaz />} />
+              <Route path="/ulaziRobe/:id" element={<UlaziRobe />} />
               <Route path="/roba/dodavanje" element={<Dodavanje />} />
               <Route path="/dispozicija/:id" element={<Dispozicija />} />
               <Route path="/dispozicije" element={<Dispozicije />} />

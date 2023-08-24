@@ -38,8 +38,6 @@ const UlazRow = (props) => {
     //     return null
     // }
 
-    const robaNazivi = props.ulaz.roba.map(item => item.naziv)
-
     const formatDatuma = (datum) => {
         datum = new Date(props.ulaz.datumUlaza)
         let dan = datum.getDate()
@@ -49,13 +47,12 @@ const UlazRow = (props) => {
     }
 
     return (
-        <tr key={props.ulaz.id} onClick={() => navigate("/ulaz/" + props.ulaz.id)}>
+        <tr key={props.ulaz.id} onClick={() => navigate("/ulaziRobe/" + props.ulaz.id)}>
             <td>{props.ulaz.id}</td>
             <td>{formatDatuma(props.ulaz.datumUlaza)}</td>
             <td>{props.ulaz.brojFakture}</td>
             <td>{props.ulaz.brojOtpremnice}</td>
             <td>{props.ulaz.proizvodjacNaziv}</td>
-            <td>{robaNazivi.join(", ")}</td>
 
             {/* <td><Button variant="warning" onClick={goToIzmena}>Edit</Button></td> */}
 

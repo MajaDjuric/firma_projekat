@@ -33,7 +33,6 @@ public class RobaToRobaDto implements Converter<Roba, RobaDto> {
 			dto.setTretman(roba.getTretman());
 		}
 		dto.setUlaz(roba.getUlaz());
-		dto.setUlaznaCena(roba.getUlaznaCena());
 		dto.setVrstaId(roba.getVrsta().getId());
 		dto.setVrstaNaziv(roba.getVrsta().getNaziv());
 		dto.setStanje(roba.getStanje());

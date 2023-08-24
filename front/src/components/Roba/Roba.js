@@ -196,7 +196,7 @@ const Roba = () => {
             <Row><Col>
                 <Row>
                     <Col>
-                        <Button variant='success' onClick={goToDodavanje}>Dodaj proizvod</Button>
+                        {window.localStorage.role == 'ROLE_FINANSIJE' ? <Button variant='success' onClick={goToDodavanje}>Dodaj proizvod</Button> : null}
                     </Col>
                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button disabled={pageNo == 0} onClick={() => getRoba(pageNo - 1)}>Prethodna</Button>
@@ -215,7 +215,6 @@ const Roba = () => {
                             <th>Pakovanje</th>
                             <th>Jedinica mere</th>
                             <th>Tretman</th>
-                            <th>Ulazna cena</th>
                             <th>Prodajna cena</th>
                             <th>Ulaz</th>
                             <th>Izlaz</th>

@@ -1,5 +1,5 @@
 
-import { Button, Col, Row, Form } from "react-bootstrap"
+import { Button, Col, Row, Form, Table } from "react-bootstrap"
 import Axios from "../../apis/Axios"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -11,34 +11,45 @@ const DodavanjeRobeUlaz = (props) => {
     const navigate = useNavigate()
 
     const init = {
-        id: '',
+        ulazId: '',
+        robaId: '',
+        // robaPakovanje: '',
+        // robaNaziv: '',
+        // robaJedinicaMere: '',
         kolicina: '',
-    }
-
-    const initProizvod = {
-        naziv: '',
-        pakovanje: '',
-        jedinicaMere: ''
+        cenaPoJediniciMere: '',
+        rabat: '',
+        pdv: '',
+        krajnjaCena: ''
     }
 
     let idUlaza = props.idUlaza;
 
-    //init
-
     const [roba, setRoba] = useState([])
-    const [novo, setNovo] = useState(init)
+    const [noviUlazRobe, setNoviUlazRobe] = useState(init)
     const [noviUlazi, setNoviUlazi] = useState([])
-    const [proizvod, setProizvod] = useState(initProizvod)
-    const [validno, setValidno] = useState(false)
 
     //dodavanje 
     const dodaj = () => {
 
-        Axios.put('/ulazi/dodavanje/' + idUlaza, noviUlazi)
+        const dto = {
+            ulazId: idUlaza,
+            robaId: noviUlazRobe.robaId,
+            // robaPakovanje: noviUlazRobe.robaPakovanje,
+            // robaNaziv: noviUlazRobe.robaNaziv,
+            // robaJedinicaMere: noviUlazRobe.robaJedinicaMere,
+            kolicina: noviUlazRobe.kolicina,
+            cenaPoJediniciMere: noviUlazRobe.cenaPoJediniciMere,
+            rabat: noviUlazRobe.rabat,
+            pdv: noviUlazRobe.pdv,
+            krajnjaCena: noviUlazRobe.krajnjaCena,
+        }
+
+        Axios.post('/ulaziRobe/' + idUlaza, dto)
             .then(res => {
                 console.log(res)
                 alert('Uspesno dodavanje!')
-                navigate('/roba')
+                navigate('/ulazi')
             })
             .catch(error => {
                 console.log(error)
@@ -58,62 +69,52 @@ const DodavanjeRobeUlaz = (props) => {
             });
     }, []);
 
-    const getProizvod = useCallback((id) => {
-        Axios.get('/roba/' + id)
-            .then(res => {
-                console.log(res);
-                setProizvod(res.data)
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske!')
-            });
-    }, []);
+    // const getProizvod = useCallback((id) => {
+    //     Axios.get('/roba/' + id)
+    //         .then(res => {
+    //             console.log(res);
+    //             setProizvod(res.data)
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //             alert('Doslo je do greske!')
+    //         });
+    // }, []);
 
     useEffect(() => {
         getRoba()
     }, [])
 
 
-    const robaSelect = () => {
-        return roba.map(proizvod => {
-            return (
-                <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere}</option>
-            )
-        })
-    }
-
-
-    //validacija
-    // const validiraj = () => {
-    //     if (vino.ime == '' || vino.opis == '') {
-    //         setValidno(false)
-    //     } else {
-    //         setValidno(true)
-    //     }
-    // }
-
     //onChange
     const inputValueChange = (e) => {
         let input = e.target
         let name = input.name
         let value = input.value
-        let novoCopy = novo
+        let novoCopy = noviUlazRobe
         novoCopy[name] = value
-        setNovo(novoCopy)
+        setNoviUlazRobe(novoCopy)
         // validiraj()
     }
 
     const IdinputValueChange = (e) => {
         let id = e.target.value
-        getProizvod(id)
+        // getProizvod(id)
     }
 
-    const dodavanjeUListu = () => {
-        setNoviUlazi([...noviUlazi, { id: proizvod.id, kolicina: novo.kolicina, naziv: proizvod.naziv, pakovanje: proizvod.pakovanje, jedinicaMere: proizvod.jedinicaMere }])
-        console.log(noviUlazi)
-        formaZaDodavanje()
+    const robaSelect = () => {
+        return roba.map(proizvod => {
+            return (
+                <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere} {proizvod.tretman}</option>
+            )
+        })
     }
+
+    // const dodavanjeUListu = () => {
+    //     setNoviUlazi([...noviUlazi, { id: proizvod.id, naziv: proizvod.naziv, pakovanje: proizvod.pakovanje, jedinicaMere: proizvod.jedinicaMere }])
+    //     console.log(noviUlazi)
+    //     formaZaDodavanje()
+    // }
 
     const ispisListe = () => {
         return noviUlazi.map((ulaz, index) => {
@@ -124,19 +125,24 @@ const DodavanjeRobeUlaz = (props) => {
                     <td>{ulaz.pakovanje}</td>
                     <td>{ulaz.jedinicaMere}</td>
                     <td>{ulaz.kolicina}</td>
+                    <td>{ulaz.cenaPoJediniciMere}</td>
+                    <td>{ulaz.pdv}</td>
+                    <td>{ulaz.rabat}</td>
+                    <td>{ulaz.ukupnaCena}</td>
                 </tr>
             )
         })
     }
 
+    //forma za dodavanje tacne kolicine i cene robe 
     const formaZaDodavanje = () => {
         return (
             <>
                 <Form>
                     <Row>
                         <Col>
-                            <Form.Label htmlFor="id">Roba</Form.Label>
-                            <Form.Select name="id" onChange={(e) => IdinputValueChange(e)}>
+                            <Form.Label htmlFor="robaId">Roba</Form.Label>
+                            <Form.Select style={{ width: "100px" }} name="robaId" onChange={(e) => inputValueChange(e)}>
                                 <option value={""}></option>
                                 {robaSelect()}
                             </Form.Select>
@@ -146,7 +152,23 @@ const DodavanjeRobeUlaz = (props) => {
                             <Form.Control name="kolicina" id="kolicina" type="number" onChange={(e) => inputValueChange(e)} />
                         </Col>
                         <Col>
-                            <br /> <Button onClick={dodavanjeUListu}> Dodaj </Button>
+                            <Form.Label htmlFor="cenaPoJediniciMere" >Cena/j.m</Form.Label>
+                            <Form.Control name="cenaPoJediniciMere" id="cenaPoJediniciMere" type="number" onChange={(e) => inputValueChange(e)} />
+                        </Col>
+                        <Col>
+                            <Form.Label htmlFor="rabat" >Rabat</Form.Label>
+                            <Form.Control name="rabat" id="rabat" type="number" onChange={(e) => inputValueChange(e)} />
+                        </Col>
+                        <Col>
+                            <Form.Label htmlFor="pdv" >PDV</Form.Label>
+                            <Form.Control name="pdv" id="pdv" type="number" onChange={(e) => inputValueChange(e)} />
+                        </Col>
+                        <Col>
+                            <Form.Label htmlFor="krajnjaCena" >Ukupno</Form.Label>
+                            <Form.Control name="krajnjaCena" id="ukupnaCena" type="number" onChange={(e) => inputValueChange(e)} />
+                        </Col>
+                        <Col>
+                            {/* <br /> <Button onClick={dodavanjeUListu}> Dodaj </Button> */}
                         </Col>
                     </Row>
                 </Form>
@@ -160,19 +182,28 @@ const DodavanjeRobeUlaz = (props) => {
         <Row>
             <Col></Col>
             <Col xs="12" sm="10" md="8">
-                <h1>Dodavanje</h1>
-                {/* <DodavanjeUlaza></DodavanjeUlaza> */}
+                <h4>Dodavanje</h4>
                 <br />
                 {formaZaDodavanje()}
                 <br />
-                <tr>
-                    <td>Redni broj</td>
-                    <td>Naziv</td>
-                    <td>Pakovanje</td>
-                    <td>jedinica mere</td>
-                    <td>Kolicina</td>
-                </tr>
-                {ispisListe()}
+                <br />
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>Redni broj</th>
+                            <th>Naziv</th>
+                            <th>Pakovanje</th>
+                            <th>Jedinica mere</th>
+                            <th>Kolicina</th>
+                            <th>Cena po jedinici mere</th>
+                            <th>PDV</th>
+                            <th>Rabat</th>
+                            <th>Ukupna cena</th>
+                        </tr>
+                    </thead>
+
+                    {ispisListe()}
+                </Table>
                 <br /> <br />  <Button onClick={dodaj}> Kreiraj </Button>
             </Col>
             <Col></Col>

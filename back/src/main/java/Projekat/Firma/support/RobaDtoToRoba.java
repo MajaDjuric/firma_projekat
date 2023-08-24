@@ -54,7 +54,6 @@ public class RobaDtoToRoba implements Converter<RobaDto, Roba> {
 				roba.setTretman(dto.getTretman());
 			}
 			roba.setUlaz(dto.getUlaz());
-			roba.setUlaznaCena(dto.getUlaznaCena());
 			roba.setTip(tipService.findOne(dto.getTipId()));
 			roba.setVrsta(vrstaService.findOne(dto.getVrstaId()));
 		}

@@ -227,7 +227,6 @@ const Ulazi = () => {
                             <th>Broj fakture</th>
                             <th>Broj otpremnice</th>
                             <th>Dobavljac</th>
-                            <th>Roba</th>
                             {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' ? <th>Broj preostalih flasa</th> : null} */}
                         </tr>
                     </thead>

@@ -27,15 +27,15 @@ INSERT INTO tip_robe (id, naziv, vrsta_id) VALUES (3, 'KUKURUZ', 2);
 INSERT INTO proizvodjac (id, pib, mb, naziv) VALUES (1, '100041221', '07557159', 'SYNGENTA AGRO DOO');
 INSERT INTO proizvodjac (id, pib, mb, naziv) VALUES (2, '102698401', '17459660', 'KWS SRBIJA DOO');
 	
-INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman, naziv, ulazna_cena, ulaz, izlaz) 
-	VALUES(1, '2022-01-07', 'L', 1, 1700.00, 1, 3, 0, 1, 1, null, 'AXIAL',  1400.00, 120, 20);
-INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulazna_cena, ulaz, izlaz) 
-	VALUES(2, '2021-08-12', 'KG', 5, 2050.00, 1 , 2, 55, 1, 2 ,null,  'NORDOX WG', 1720.00, 100, 45);
-INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulazna_cena, ulaz, izlaz) 
-	VALUES(3, '2022-06-30', 'KG', 25, 5850.00, 2, 3, 1000, 2, 3,  'INITIO BIRD PROTECT', 'KWS KASHMIR', 4900.00, 1000, 0);
+INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman, naziv, ulaz, izlaz) 
+	VALUES(1, '2022-01-07', 'L', 1, 1700.00, 1, 3, 0, 1, 1, null, 'AXIAL',  120, 20);
+INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulaz, izlaz) 
+	VALUES(2, '2021-08-12', 'KG', 5, 2050.00, 1 , 2, 55, 1, 2 ,null,  'NORDOX WG',  100, 45);
+INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulaz, izlaz) 
+	VALUES(3, '2022-06-30', 'KG', 25, 5850.00, 2, 3, 1000, 2, 3,  'INITIO BIRD PROTECT', 'KWS KASHMIR', 1000, 0);
 	
-INSERT INTO ulaz (id, broj_fakture, broj_otpremnice, cena_po_jedinici_mere, datum_ulaza, kolicina, rabat, proizvodjac_id) VALUES (1, 'S01-23', 'S01', 500, '2023-04-08', 15, 3, 1);
-INSERT INTO ulaz (id, broj_fakture, broj_otpremnice, cena_po_jedinici_mere, datum_ulaza, kolicina, rabat, proizvodjac_id) VALUES (2, 'KWS02-23', 'KWS02', 6000, '2023-04-10', 2, 5, 2);
+INSERT INTO ulaz (id, broj_fakture, broj_otpremnice, datum_ulaza, proizvodjac_id) VALUES (1, 'S01-23', 'S01', '2023-04-08', 1);
+INSERT INTO ulaz (id, broj_fakture, broj_otpremnice, datum_ulaza, proizvodjac_id) VALUES (2, 'KWS02-23', 'KWS02', '2023-04-10', 2);
 
 INSERT INTO kupac (id, adresa, grad, pib, mb, naziv, teren, komercijalista_id)
 	VALUES(1, 'Beogradska 146', '24415 Backi Vinogradi', '102453025', '08659206', 'ZZ PRIMA', 'Severna Backa', 1);
@@ -44,7 +44,11 @@ INSERT INTO kupac (id, adresa, grad, pib, mb, naziv, teren, komercijalista_id)
 	
 INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (1, 2);
 INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (1, 1); 
-INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (2, 3);
+INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (2, 3); 
+
+INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, pdv, rabat) VALUES (1, 1, 1, 120, 1200, 1242, 15, 10);
+INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, pdv, rabat) VALUES (2, 1, 2, 100, 1700, 8308.75, 15, 15);
+INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, pdv, rabat) VALUES (3, 2, 3, 1000, 4900, 5120.5, 10, 5);
 
 INSERT INTO trebovanje (id, komercijalista_id, kupac_id, disponirano, isporuceno, datum_trebovanja) VALUES (1, 1, 1, false, false, '2023-07-12');
 INSERT INTO trebovanje (id, komercijalista_id, kupac_id, disponirano, isporuceno, datum_trebovanja) VALUES (2, 1, 2, false, false, '2023-07-05');

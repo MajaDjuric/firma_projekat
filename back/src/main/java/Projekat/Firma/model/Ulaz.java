@@ -29,16 +29,7 @@ public class Ulaz {
 	
 	@Column
 	private String brojFakture;
-	
-	@Column
-	private int kolicina;
-	
-	@Column
-	private double cenaPoJediniciMere;
-	
-	@Column
-	private double rabat;
-	
+		
 	@ManyToOne
 	private Proizvodjac proizvodjac;
 	
@@ -78,30 +69,6 @@ public class Ulaz {
 
 	public void setBrojFakture(String brojFakture) {
 		this.brojFakture = brojFakture;
-	}
-
-	public int getKolicina() {
-		return kolicina;
-	}
-
-	public void setKolicina(int kolicina) {
-		this.kolicina = kolicina;
-	}
-
-	public double getCenaPoJediniciMere() {
-		return cenaPoJediniciMere;
-	}
-
-	public void setCenaPoJediniciMere(double cenaPoJediniciMere) {
-		this.cenaPoJediniciMere = cenaPoJediniciMere;
-	}
-
-	public double getRabat() {
-		return rabat;
-	}
-
-	public void setRabat(double rabat) {
-		this.rabat = rabat;
 	}
 
 	public Proizvodjac getProizvodjac() {

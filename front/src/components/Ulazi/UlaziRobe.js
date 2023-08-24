@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import RobaRow from './UlazRow';
 import UlazRow from './UlazRow';
 
-const Ulaz = (props) => {
+const UlaziRobe = (props) => {
 
     //navigate
     const navigate = useNavigate()
@@ -22,19 +22,19 @@ const Ulaz = (props) => {
     }
 
     //state
-    const [ulaz, setUlaz] = useState([])
+    const [ulaziRobe, setUlaziRobe] = useState([])
     const [roba, setRoba] = useState([])
     const [proizvodjaci, setProizvodjaci] = useState([])
     const [hidden, setHidden] = useState(false)
 
 
     //dobavljanje svih
-    const getUlaz = useCallback(() => {
+    const getUlaziRobe = useCallback(() => {
 
-        Axios.get('/ulazi/' + ulazId)
+        Axios.get('/ulaziRobe/' + ulazId + '/ulazi')
             .then(res => {
                 console.log(res);
-                setUlaz(res.data)
+                setUlaziRobe(res.data)
             })
             .catch(error => {
                 console.log(error);
@@ -68,7 +68,7 @@ const Ulaz = (props) => {
 
 
     useEffect(() => {
-        getUlaz()
+        getUlaziRobe()
         getRoba()
     }, [])
 
@@ -82,14 +82,21 @@ const Ulaz = (props) => {
         })
     }
 
-    const robaRender = () => {
-        return roba.map((roba1, index) => {
+    const ulaziRobeRender = () => {
+        return ulaziRobe.map((ulazRobe, index) => {
             return (
-                <tr key={roba1.id}>
+                <tr key={ulazRobe.id}>
                     <td>{index + 1}</td>
-                    <td>{roba1.naziv}</td>
-                    <td>{roba1.pakovanje}</td>
-                    <td>{roba1.jedinicaMere}</td>
+                    <td>{ulazRobe.robaNaziv}</td>
+                    <td>{ulazRobe.robaPakovanje}</td>
+                    <td>{ulazRobe.robaJedinicaMere}</td>
+                    <td>{ulazRobe.kolicina}</td>
+                    <td>{ulazRobe.cenaPoJediniciMere}</td>
+                    <td>{ulazRobe.pdv}</td>
+                    <td>{ulazRobe.rabat}</td>
+                    <td>{ulazRobe.krajnjaCena}</td>
+
+
                     <td>{ }</td>
 
                 </tr>
@@ -118,8 +125,7 @@ const Ulaz = (props) => {
             <br /><br />
             <Row><Col>
 
-                {/* <h1>Broj fakture: {ulaz.brojFakture}</h1> */}
-                <h2>Broj fakture: {ulaz.brojFakture}</h2>
+                {/* <h2>Broj fakture: {ulaz.brojFakture}</h2> */}
                 <br />
 
                 <Table style={{ marginTop: 5 }}>
@@ -131,14 +137,14 @@ const Ulaz = (props) => {
                             <th>Jedinica mere</th>
                             <th>Kolicina</th>
                             <th>Osnovna cena</th>
-                            <th>Rabat</th>
                             <th>PDV</th>
+                            <th>Rabat</th>
                             <th>Krajnja cena</th>
                             {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' ? <th>Broj preostalih flasa</th> : null} */}
                         </tr>
                     </thead>
                     <tbody>
-                        {robaRender()}
+                        {ulaziRobeRender()}
                     </tbody>
                 </Table>
             </Col>
@@ -147,6 +153,6 @@ const Ulaz = (props) => {
     )
 }
 
-export default Ulaz
+export default UlaziRobe
 
 // {window.localStorage.getItem('role') == 'ROLE_ADMIN' ?

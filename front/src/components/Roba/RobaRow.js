@@ -48,7 +48,6 @@ const RobaRow = (props) => {
             <td>{props.roba.pakovanje}</td>
             <td>{props.roba.jedinicaMere}</td>
             <td>{props.roba.tretman}</td>
-            <td>{props.roba.ulaznaCena}</td>
             <td>{props.roba.prodajnaCena}</td>
             <td>{props.roba.ulaz}</td>
             <td>{props.roba.izlaz}</td>

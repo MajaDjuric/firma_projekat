@@ -33,10 +33,7 @@ public class Roba {
 	
 	@ManyToOne
 	private Proizvodjac proizvodjac;
-	
-	@Column
-	private double ulaznaCena;
-	
+
 	@Column
 	private double prodajnaCena; //bez pdv-a
 	
@@ -153,15 +150,6 @@ public class Roba {
 
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
-	}
-
-
-	public double getUlaznaCena() {
-		return ulaznaCena;
-	}
-
-	public void setUlaznaCena(double ulaznaCena) {
-		this.ulaznaCena = ulaznaCena;
 	}
 
 	public double getProdajnaCena() {
