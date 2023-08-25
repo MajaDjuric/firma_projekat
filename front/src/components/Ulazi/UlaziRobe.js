@@ -2,8 +2,6 @@ import Axios from '../../apis/Axios';
 import { useCallback, useEffect, useState } from "react"
 import { Button, Col, Form, Row, Table } from "react-bootstrap"
 import { useNavigate, useParams } from 'react-router-dom';
-import RobaRow from './UlazRow';
-import UlazRow from './UlazRow';
 
 const UlaziRobe = (props) => {
 
@@ -18,14 +16,13 @@ const UlaziRobe = (props) => {
         datumUlaza: '',
         brojFakture: '',
         brojOtpremnice: '',
-        proizvodjacId: ''
+        proizvodjacNaziv: ''
     }
 
     //state
     const [ulaziRobe, setUlaziRobe] = useState([])
     const [roba, setRoba] = useState([])
-    const [proizvodjaci, setProizvodjaci] = useState([])
-    const [hidden, setHidden] = useState(false)
+    const [ulaz, setUlaz] = useState(init)
 
 
     //dobavljanje svih
@@ -35,6 +32,19 @@ const UlaziRobe = (props) => {
             .then(res => {
                 console.log(res);
                 setUlaziRobe(res.data)
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Doslo je do greske!')
+            });
+    }, []);
+
+    const getUlaz = useCallback(() => {
+
+        Axios.get('/ulazi/' + ulazId)
+            .then(res => {
+                console.log(res);
+                setUlaz(res.data)
             })
             .catch(error => {
                 console.log(error);
@@ -54,33 +64,13 @@ const UlaziRobe = (props) => {
             });
     }, []);
 
-    // const getProizvodjaci = useCallback(() => {
-    //     Axios.get('/proizvodjaci')
-    //         .then(res => {
-    //             console.log(res);
-    //             setProizvodjaci(res.data)
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //             alert('Doslo je do greske!')
-    //         });
-    // }, []);
-
 
     useEffect(() => {
         getUlaziRobe()
+        getUlaz()
         getRoba()
     }, [])
 
-
-    //ispis za select
-    const robaSelect = () => {
-        return roba.map(proizvod => {
-            return (
-                <option key={proizvod.id} value={proizvod.id}>{proizvod.naziv}  {proizvod.pakovanje} {proizvod.jedinicaMere}</option>
-            )
-        })
-    }
 
     const ulaziRobeRender = () => {
         return ulaziRobe.map((ulazRobe, index) => {
@@ -94,38 +84,37 @@ const UlaziRobe = (props) => {
                     <td>{ulazRobe.cenaPoJediniciMere}</td>
                     <td>{ulazRobe.pdv}</td>
                     <td>{ulazRobe.rabat}</td>
-                    <td>{ulazRobe.krajnjaCena}</td>
-
-
-                    <td>{ }</td>
-
+                    <td>{ulazRobe.krajnjaCenaPoJediniciMere}</td>
+                    <td>{ulazRobe.krajnjaCena.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    {window.localStorage.role == 'ROLE_FINANSIJE' ?
+                        <td><Button variant='warning'>Izmeni</Button></td> : null}
                 </tr>
 
             )
         })
     }
 
-
-    //onchange
-    // const onInputChange = (e) => {
-    //     let name = e.target.name
-    //     let value = e.target.value
-
-    //     let parametriCopy = parametriPretrage
-    //     parametriCopy[name] = value
-    //     setParametriPretrage(parametriCopy)
-    // }
-
+    const formatirajDatum = (datumParam) => {
+        let datum = new Date(datumParam)
+        let dan = datum.getDate()
+        let mesec = datum.getMonth() + 1
+        let godina = datum.getFullYear()
+        return (dan <= 9 ? '0' + dan : dan) + '.' + (mesec <= 9 ? '0' + mesec : mesec) + '.' + godina + '.'
+    }
 
     //krajnji ispis
     return (
         <Col>
-            {/* <Row><h1>Vina</h1></Row> */}
 
             <br /><br />
             <Row><Col>
 
-                {/* <h2>Broj fakture: {ulaz.brojFakture}</h2> */}
+                <div>
+                    <p> Datum ulaza: {formatirajDatum(ulaz.datumUlaza)}</p>
+                    <p> Broj fakture: {ulaz.brojFakture}</p>
+                    <p> Broj otpremnice: {ulaz.brojOtpremnice}</p>
+                    <p> Dobavljac: {ulaz.proizvodjacNaziv}</p>
+                </div>
                 <br />
 
                 <Table style={{ marginTop: 5 }}>
@@ -139,8 +128,9 @@ const UlaziRobe = (props) => {
                             <th>Osnovna cena</th>
                             <th>PDV</th>
                             <th>Rabat</th>
+                            <th>Krajnja cena/j.m.</th>
                             <th>Krajnja cena</th>
-                            {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' ? <th>Broj preostalih flasa</th> : null} */}
+                            {window.localStorage.role == 'ROLE_FINANSIJE' ? <th></th> : null}
                         </tr>
                     </thead>
                     <tbody>
@@ -154,5 +144,3 @@ const UlaziRobe = (props) => {
 }
 
 export default UlaziRobe
-
-// {window.localStorage.getItem('role') == 'ROLE_ADMIN' ?

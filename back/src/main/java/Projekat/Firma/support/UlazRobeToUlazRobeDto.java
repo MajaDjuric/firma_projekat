@@ -19,6 +19,7 @@ public class UlazRobeToUlazRobeDto implements Converter<UlazRobe, UlazRobeDto>{
 		dto.setId(ur.getId());
 		dto.setKolicina(ur.getKolicina());
 		dto.setKrajnjaCena(ur.getKrajnjaCena());
+		dto.setKrajnjaCenaPoJediniciMere(ur.getKrajnjaCenaPoJediniciMere());
 		dto.setPdv(ur.getPdv());
 		dto.setRabat(ur.getRabat());
 		dto.setRobaId(ur.getRoba().getId());

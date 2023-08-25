@@ -78,7 +78,13 @@ public class UlazRobeController {
 		ulaz.getRoba().add(roba);
 		Ulaz updatedUlaz = ulazService.update(ulaz);
 		UlazRobe ulazRobe = toUlazRobe.convert(ulazRobeDto); 
+		double krajnjaCenaPoJediniciMere = (ulazRobe.getCenaPoJediniciMere() + (ulazRobe.getCenaPoJediniciMere() * ulazRobe.getPdv() /100)) * ((100 - ulazRobe.getRabat()) / 100);
+		ulazRobe.setKrajnjaCenaPoJediniciMere(krajnjaCenaPoJediniciMere);
+		double krajnjaCena = ulazRobe.getKolicina() * krajnjaCenaPoJediniciMere;
+		ulazRobe.setKrajnjaCena(krajnjaCena);
 		UlazRobe noviUlazRobe = ulazRobeService.save(ulazRobe);
+		roba.setStanje(roba.getStanje() + noviUlazRobe.getKolicina());
+		Roba updatedRoba = robaService.update(roba);
 		return new ResponseEntity<UlazRobeDto>(toUlazRobeDto.convert(noviUlazRobe), HttpStatus.CREATED);
 	}
 	

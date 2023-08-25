@@ -46,9 +46,9 @@ INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (1, 2);
 INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (1, 1); 
 INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (2, 3); 
 
-INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, pdv, rabat) VALUES (1, 1, 1, 120, 1200, 1242, 15, 10);
-INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, pdv, rabat) VALUES (2, 1, 2, 100, 1700, 8308.75, 15, 15);
-INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, pdv, rabat) VALUES (3, 2, 3, 1000, 4900, 5120.5, 10, 5);
+INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, krajnja_cena_po_jedinici_mere, pdv, rabat) VALUES (1, 1, 1, 120, 1200,149040, 1242, 15, 10);
+INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, krajnja_cena_po_jedinici_mere, pdv, rabat) VALUES (2, 1, 2, 100, 1700, 166175, 1661.75, 15, 15);
+INSERT INTO ulaz_robe (id, ulaz_id, roba_id, kolicina, cena_po_jedinici_mere, krajnja_cena, krajnja_cena_po_jedinici_mere, pdv, rabat) VALUES (3, 2, 3, 1000, 4900, 5120500, 5120.5, 10, 5);
 
 INSERT INTO trebovanje (id, komercijalista_id, kupac_id, disponirano, isporuceno, datum_trebovanja) VALUES (1, 1, 1, false, false, '2023-07-12');
 INSERT INTO trebovanje (id, komercijalista_id, kupac_id, disponirano, isporuceno, datum_trebovanja) VALUES (2, 1, 2, false, false, '2023-07-05');

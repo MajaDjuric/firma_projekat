@@ -211,7 +211,7 @@ const Ulazi = () => {
             <Row><Col>
                 <Row>
                     <Col>
-                        <Button variant='success' onClick={goToDodavanje}>Dodaj ulaz</Button>
+                        {window.localStorage.role == 'ROLE_FINANSIJE' ? <Button variant='success' onClick={goToDodavanje}>Dodaj ulaz</Button> : null}
                     </Col>
                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button disabled={pageNo == 0} onClick={() => getUlazi(pageNo - 1)}>Prethodna</Button>

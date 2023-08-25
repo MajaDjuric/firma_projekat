@@ -36,6 +36,10 @@ public class UlazRobe {
 	private int pdv;
 	
 	@Column
+	private double krajnjaCenaPoJediniciMere;
+	
+	// cena po jedinici mere * kolicina
+	@Column
 	private double krajnjaCena;
 
 	public Long getId() {
@@ -68,6 +72,14 @@ public class UlazRobe {
 
 	public void setKolicina(int kolicina) {
 		this.kolicina = kolicina;
+	}
+	
+	public double getKrajnjaCenaPoJediniciMere() {
+		return krajnjaCenaPoJediniciMere;
+	}
+
+	public void setKrajnjaCenaPoJediniciMere(double krajnjaCenaPoJediniciMere) {
+		this.krajnjaCenaPoJediniciMere = krajnjaCenaPoJediniciMere;
 	}
 
 	public double getCenaPoJediniciMere() {

@@ -13,20 +13,18 @@ const DodavanjeRobeUlaz = (props) => {
     const init = {
         ulazId: '',
         robaId: '',
-        // robaPakovanje: '',
-        // robaNaziv: '',
-        // robaJedinicaMere: '',
         kolicina: '',
         cenaPoJediniciMere: '',
         rabat: '',
         pdv: '',
-        krajnjaCena: ''
     }
 
     let idUlaza = props.idUlaza;
 
     const [roba, setRoba] = useState([])
     const [noviUlazRobe, setNoviUlazRobe] = useState(init)
+    const [listaUlazaRobe, setListaUlazaRobe] = useState([])
+    const [proizvod, setProizvod] = useState('')
     const [noviUlazi, setNoviUlazi] = useState([])
 
     //dodavanje 
@@ -35,9 +33,6 @@ const DodavanjeRobeUlaz = (props) => {
         const dto = {
             ulazId: idUlaza,
             robaId: noviUlazRobe.robaId,
-            // robaPakovanje: noviUlazRobe.robaPakovanje,
-            // robaNaziv: noviUlazRobe.robaNaziv,
-            // robaJedinicaMere: noviUlazRobe.robaJedinicaMere,
             kolicina: noviUlazRobe.kolicina,
             cenaPoJediniciMere: noviUlazRobe.cenaPoJediniciMere,
             rabat: noviUlazRobe.rabat,
@@ -48,8 +43,12 @@ const DodavanjeRobeUlaz = (props) => {
         Axios.post('/ulaziRobe/' + idUlaza, dto)
             .then(res => {
                 console.log(res)
-                alert('Uspesno dodavanje!')
-                navigate('/ulazi')
+                getUlaziRobe()
+                console.log('Before reset:', noviUlazRobe);
+                setNoviUlazRobe(init);
+                console.log('After reset:', noviUlazRobe);
+                // alert('Uspesno dodavanje!')
+                // navigate('/ulazi')
             })
             .catch(error => {
                 console.log(error)
@@ -69,17 +68,36 @@ const DodavanjeRobeUlaz = (props) => {
             });
     }, []);
 
-    // const getProizvod = useCallback((id) => {
-    //     Axios.get('/roba/' + id)
-    //         .then(res => {
-    //             console.log(res);
-    //             setProizvod(res.data)
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //             alert('Doslo je do greske!')
-    //         });
-    // }, []);
+    //svi ulaziRobe odredjenog ulaza
+    const getUlaziRobe = useCallback(() => {
+        Axios.get('/ulaziRobe/' + idUlaza + '/ulazi')
+            .then(res => {
+                console.log(res);
+                setListaUlazaRobe(res.data)
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Doslo je do greske!')
+            });
+    }, []);
+
+    //dobavljanje izabrane robe pri dodavanju ulazaRobe da bi se setovao pdv
+    const getProizvod = useCallback((id) => {
+        Axios.get('/roba/' + id)
+            .then(res => {
+                console.log(res);
+                setProizvod(res.data.vrstaNaziv)
+                if (res.data.vrstaNaziv == 'PESTICIDI') {
+                    setNoviUlazRobe(prevNoviUlazRobe => ({ ...prevNoviUlazRobe, pdv: 15 }))
+                } else {
+                    setNoviUlazRobe(prevNoviUlazRobe => ({ ...prevNoviUlazRobe, pdv: 10 }))
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Doslo je do greske!')
+            });
+    }, []);
 
     useEffect(() => {
         getRoba()
@@ -91,15 +109,13 @@ const DodavanjeRobeUlaz = (props) => {
         let input = e.target
         let name = input.name
         let value = input.value
-        let novoCopy = noviUlazRobe
-        novoCopy[name] = value
-        setNoviUlazRobe(novoCopy)
-        // validiraj()
-    }
-
-    const IdinputValueChange = (e) => {
-        let id = e.target.value
-        // getProizvod(id)
+        setNoviUlazRobe(prevState => ({   //This approach will make sure that you're always working with the latest state when updating individual fields.
+            ...prevState,
+            [name]: value
+        }))
+        if (name == 'robaId') {
+            getProizvod(value)
+        }
     }
 
     const robaSelect = () => {
@@ -110,25 +126,21 @@ const DodavanjeRobeUlaz = (props) => {
         })
     }
 
-    // const dodavanjeUListu = () => {
-    //     setNoviUlazi([...noviUlazi, { id: proizvod.id, naziv: proizvod.naziv, pakovanje: proizvod.pakovanje, jedinicaMere: proizvod.jedinicaMere }])
-    //     console.log(noviUlazi)
-    //     formaZaDodavanje()
-    // }
 
     const ispisListe = () => {
-        return noviUlazi.map((ulaz, index) => {
+        return listaUlazaRobe.map((ulazRobe, index) => {
             return (
                 <tr>
                     <td>{index + 1}</td>
-                    <td>{ulaz.naziv}</td>
-                    <td>{ulaz.pakovanje}</td>
-                    <td>{ulaz.jedinicaMere}</td>
-                    <td>{ulaz.kolicina}</td>
-                    <td>{ulaz.cenaPoJediniciMere}</td>
-                    <td>{ulaz.pdv}</td>
-                    <td>{ulaz.rabat}</td>
-                    <td>{ulaz.ukupnaCena}</td>
+                    <td>{ulazRobe.robaNaziv}</td>
+                    <td>{ulazRobe.robaPakovanje}</td>
+                    <td>{ulazRobe.robaJedinicaMere}</td>
+                    <td>{ulazRobe.kolicina}</td>
+                    <td>{ulazRobe.cenaPoJediniciMere}</td>
+                    <td>{ulazRobe.pdv}</td>
+                    <td>{ulazRobe.rabat}</td>
+                    <td>{ulazRobe.krajnjaCenaPoJediniciMere}</td>
+                    <td>{ulazRobe.krajnjaCena}</td>
                 </tr>
             )
         })
@@ -142,40 +154,35 @@ const DodavanjeRobeUlaz = (props) => {
                     <Row>
                         <Col>
                             <Form.Label htmlFor="robaId">Roba</Form.Label>
-                            <Form.Select style={{ width: "100px" }} name="robaId" onChange={(e) => inputValueChange(e)}>
+                            <Form.Select value={noviUlazRobe.robaId} style={{ width: "250px" }} name="robaId" onChange={(e) => inputValueChange(e)}>
                                 <option value={""}></option>
                                 {robaSelect()}
                             </Form.Select>
                         </Col>
                         <Col>
                             <Form.Label htmlFor="kolicina" >Kolicina</Form.Label>
-                            <Form.Control name="kolicina" id="kolicina" type="number" onChange={(e) => inputValueChange(e)} />
+                            <Form.Control value={noviUlazRobe.kolicina} name="kolicina" id="kolicina" type="number" onChange={(e) => inputValueChange(e)} />
                         </Col>
                         <Col>
                             <Form.Label htmlFor="cenaPoJediniciMere" >Cena/j.m</Form.Label>
-                            <Form.Control name="cenaPoJediniciMere" id="cenaPoJediniciMere" type="number" onChange={(e) => inputValueChange(e)} />
+                            <Form.Control value={noviUlazRobe.cenaPoJediniciMere} name="cenaPoJediniciMere" id="cenaPoJediniciMere" type="number" onChange={(e) => inputValueChange(e)} />
                         </Col>
                         <Col>
                             <Form.Label htmlFor="rabat" >Rabat</Form.Label>
-                            <Form.Control name="rabat" id="rabat" type="number" onChange={(e) => inputValueChange(e)} />
+                            <Form.Control value={noviUlazRobe.rabat} name="rabat" id="rabat" type="number" onChange={(e) => inputValueChange(e)} />
                         </Col>
                         <Col>
                             <Form.Label htmlFor="pdv" >PDV</Form.Label>
-                            <Form.Control name="pdv" id="pdv" type="number" onChange={(e) => inputValueChange(e)} />
+                            <Form.Control value={noviUlazRobe.pdv} name="pdv" id="pdv" type="number" onChange={(e) => inputValueChange(e)} />
                         </Col>
                         <Col>
-                            <Form.Label htmlFor="krajnjaCena" >Ukupno</Form.Label>
-                            <Form.Control name="krajnjaCena" id="ukupnaCena" type="number" onChange={(e) => inputValueChange(e)} />
-                        </Col>
-                        <Col>
-                            {/* <br /> <Button onClick={dodavanjeUListu}> Dodaj </Button> */}
+                            <br /> <Button onClick={dodaj}> Dodaj </Button>
                         </Col>
                     </Row>
                 </Form>
             </>
         )
     }
-
 
     //krajnji ispis
     return (
@@ -195,14 +202,16 @@ const DodavanjeRobeUlaz = (props) => {
                             <th>Pakovanje</th>
                             <th>Jedinica mere</th>
                             <th>Kolicina</th>
-                            <th>Cena po jedinici mere</th>
+                            <th>Cena/j.m.</th>
                             <th>PDV</th>
                             <th>Rabat</th>
+                            <th>Ukupna cena/j.m.</th>
                             <th>Ukupna cena</th>
                         </tr>
                     </thead>
-
-                    {ispisListe()}
+                    <tbody>
+                        {ispisListe()}
+                    </tbody>
                 </Table>
                 <br /> <br />  <Button onClick={dodaj}> Kreiraj </Button>
             </Col>

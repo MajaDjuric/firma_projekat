@@ -14,6 +14,7 @@ public class UlazRobeDto {
 	private double rabat;
 	private int pdv;
 	private double krajnjaCena;
+	private double krajnjaCenaPoJediniciMere;
 	
 	
 	public Long getId() {
@@ -24,6 +25,12 @@ public class UlazRobeDto {
 	}
 	public String getUlazBrojFakture() {
 		return ulazBrojFakture;
+	}
+	public double getKrajnjaCenaPoJediniciMere() {
+		return krajnjaCenaPoJediniciMere;
+	}
+	public void setKrajnjaCenaPoJediniciMere(double krajnjaCenaPoJediniciMere) {
+		this.krajnjaCenaPoJediniciMere = krajnjaCenaPoJediniciMere;
 	}
 	public void setUlazBrojFakture(String ulazBrojFakture) {
 		this.ulazBrojFakture = ulazBrojFakture;
