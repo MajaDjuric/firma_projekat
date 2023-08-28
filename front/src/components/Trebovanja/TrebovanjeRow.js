@@ -28,7 +28,6 @@ const TrebovanjeRow = (props) => {
 
 
     return (
-        // <tr onClick={() => navigate('/trebovanjeDetalji/' + trebovanjeId)} key={props.trebovanje.id}>
         <tr>
             <td onClick={() => navigate('/trebovanje/izmena/' + trebovanjeId)}>{trebovanjeId}</td>
             <td onClick={() => navigate('/trebovanje/izmena/' + trebovanjeId)}>{props.trebovanje.kupacDto.teren}</td>

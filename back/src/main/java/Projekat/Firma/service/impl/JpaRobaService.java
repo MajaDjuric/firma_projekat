@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import Projekat.Firma.model.Roba;
+import Projekat.Firma.model.VrstaRobe;
 import Projekat.Firma.repository.RobaRepository;
 import Projekat.Firma.service.RobaService;
 
@@ -23,8 +24,8 @@ public class JpaRobaService implements RobaService{
 	}
 
 	@Override
-	public Page<Roba> search(String naziv, Long proizvodjacId, Double pakovanje, String tretman, Long  vrstaId, int pageNo) {
-		return robaRepository.search(naziv, proizvodjacId, pakovanje, tretman, vrstaId, PageRequest.of(pageNo, 5));
+	public Page<Roba> search(VrstaRobe vrsta, String naziv, Long proizvodjacId, Double pakovanje, String tretman, int pageNo) {
+		return robaRepository.search(vrsta, naziv, proizvodjacId, pakovanje, tretman, PageRequest.of(pageNo, 5));
 	}
 
 	@Override
@@ -57,6 +58,6 @@ public class JpaRobaService implements RobaService{
 	public List<Roba> findByUlaziId(Long id) {
 		return robaRepository.findByUlaziId(id);
 	}
-	
+
 	
 }

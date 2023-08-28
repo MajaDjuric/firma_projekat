@@ -9,4 +9,5 @@ import Projekat.Firma.model.VrstaRobe;
 public interface VrstaRepository extends JpaRepositoryImplementation<VrstaRobe, Long> {
 
 	VrstaRobe findOneById (Long id);
+	VrstaRobe findByNaziv (String naziv);
 }

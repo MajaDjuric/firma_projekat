@@ -10,22 +10,23 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import Projekat.Firma.model.Roba;
+import Projekat.Firma.model.VrstaRobe;
 
 @Repository
 public interface RobaRepository extends JpaRepositoryImplementation<Roba, Long> {
 
 	Roba findONeById (Long id);
 	@Query("SELECT r FROM Roba r WHERE "
+			+ "(:vrsta IS NULL OR r.vrsta = :vrsta) AND "
 			+ "(:naziv IS NULL OR r.naziv LIKE %:naziv%) AND "
 			+ "(:proizvodjacId IS NULL OR r.proizvodjac.id = :proizvodjacId) AND "
 			+ "(:pakovanje IS NULL OR r.pakovanje = :pakovanje) AND "
-			+ "(:tretman IS NULL OR r.tretman LIKE %:tretman%) AND"
-			+ "(:vrstaId IS NULL OR r.vrsta.id = :vrstaId)")
-			Page<Roba> search (@Param ("naziv") String naziv,
+			+ "(:tretman IS NULL OR r.tretman LIKE %:tretman%)")
+			Page<Roba> search (@Param ("vrsta") VrstaRobe vrsta,
+							   @Param ("naziv") String naziv,
 							   @Param ("proizvodjacId") Long proizvodjacId,
 							   @Param ("pakovanje") Double pakovanje,
 							   @Param ("tretman") String tretman,
-							   @Param ("vrstaId") Long vrstaId,
 							   Pageable pageable);
 	
     List<Roba> findByIdIn(List<Long> ids);

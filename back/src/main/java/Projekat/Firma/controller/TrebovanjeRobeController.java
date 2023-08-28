@@ -142,8 +142,26 @@ public class TrebovanjeRobeController {
 		if (trebovanjeRobe == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		int kolicina = requestBody.get("kolicina");
-    	trebovanjeRobe.setKolicina(kolicina);
+		Roba roba = trebovanjeRobe.getRoba();
+		int stanje = roba.getStanje();
+		int novaKolicina = requestBody.get("kolicina");
+		int staraKolicina = trebovanjeRobe.getKolicina();
+		int razlikaUKolicini = staraKolicina - novaKolicina;
+		if (razlikaUKolicini > 0) {
+			roba.setStanje(stanje + razlikaUKolicini);
+		}else {
+			roba.setStanje(stanje + razlikaUKolicini);
+		}
+		 
+		System.out.println();
+		System.out.println("stara kolicina" + staraKolicina);
+		System.out.println("nova kolicina" + novaKolicina);
+		System.out.println("razlika" + razlikaUKolicini);
+		System.out.println("roba stanje" + stanje);
+		System.out.println();
+		
+		Roba updatedRoba = robaService.update(roba);
+    	trebovanjeRobe.setKolicina(novaKolicina);
 		TrebovanjeRobe izmenjenoTrebovanjeRobe = trebovanjeRobeService.update(trebovanjeRobe);
 		return new ResponseEntity<>(toTrebovanjeRobeDto.convert(izmenjenoTrebovanjeRobe), HttpStatus.OK);	
 	}

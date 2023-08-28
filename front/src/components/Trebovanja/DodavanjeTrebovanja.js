@@ -30,12 +30,13 @@ const DodavanjeTrebovanja = () => {
 
     //init
     const [trebovanje, setTrebovanje] = useState(initTrebovanje)
+    const [trebovanjeId, setTrebovanjeId] = useState('')
     const [trebovanjeRobe, setTrebovanjeRobe] = useState(initTrebovanjeRobe)
     const [trebovanaRoba, setTrebovanaRoba] = useState([])
     const [listaRobe, setListaRobe] = useState([])
     const [roba, setRoba] = useState([])
     const [kupci, setKupci] = useState([])
-    const [stanje, setStanje] = useState(0)
+    const [stanje, setStanje] = useState('')
     const [komercijalisti, setKomercijalisti] = useState([])
     const [hidden, setHidden] = useState(false)
     const [hiddenTabela, setHiddenTabela] = useState(false)
@@ -48,8 +49,6 @@ const DodavanjeTrebovanja = () => {
         Axios.delete('/trebovanjaRobe/' + id)
             .then(res => {
                 console.log(res);
-                alert('Uspesno brisanje!');
-                window.location.reload();
             })
             .catch(error => {
                 console.log(error);
@@ -120,7 +119,7 @@ const DodavanjeTrebovanja = () => {
     const dodajTrebovanejRobe = () => {
 
         const dto = {
-            trebovanjeId: trebovanjeRobe.trebovanjeId,
+            trebovanjeId: novoTrebovanje.id,
             robaId: trebovanjeRobe.robaId,
             kolicina: trebovanjeRobe.kolicina
         }
@@ -129,6 +128,8 @@ const DodavanjeTrebovanja = () => {
             .then(res => {
                 console.log(res)
                 getTrebovanaRoba(dto.trebovanjeId)
+                setTrebovanjeRobe(initTrebovanjeRobe)
+                setStanje('')
             })
             .catch(error => {
                 console.log(error)
@@ -208,7 +209,7 @@ const DodavanjeTrebovanja = () => {
                     <td>{roba.robaPakovanje}</td>
                     <td>{roba.robaJedinicaMere}</td>
                     <td>{roba.kolicina}</td>
-                    <td><Button variant="danger" onClick={() => deleteTrebovanje(roba.id)}>Obrisi</Button></td>
+                    {/* <td><Button variant="danger" onClick={() => deleteTrebovanje(roba.id)}>Obrisi</Button></td> */}
                 </tr>
             )
         })
@@ -252,8 +253,10 @@ const DodavanjeTrebovanja = () => {
         let name = input.name
         let value = input.value
         let trebovanjeRobeCopy = trebovanjeRobe
-        trebovanjeRobeCopy[name] = value
-        setTrebovanjeRobe(trebovanjeRobeCopy)
+        setTrebovanjeRobe(prevState => ({   //This approach will make sure that you're always working with the latest state when updating individual fields.
+            ...prevState,
+            [name]: value
+        }))
         // validiraj()
     }
 
@@ -288,12 +291,12 @@ const DodavanjeTrebovanja = () => {
                     <Row>
                         <Col>
                             <Form.Label htmlFor="robaId">Proizvod</Form.Label>
-                            <Form.Select name="robaId" onChange={(e) => trebovanjeRobeInputValueChange(e)}>
+                            <Form.Select value={trebovanjeRobe.robaId} name="robaId" onChange={(e) => trebovanjeRobeInputValueChange(e)}>
                                 <option value={""}></option>
                                 {robaSelect()}
                             </Form.Select>
                             <Form.Label htmlFor="kolicina">Kolicina</Form.Label>
-                            <Form.Control name="kolicina" id="kolicina" placeholder={stanje} type="number" onChange={(e) => kolicinaTrebovaneRobeInputValueChange(e)} />
+                            <Form.Control value={trebovanjeRobe.kolicina} name="kolicina" id="kolicina" placeholder={stanje} type="number" onChange={(e) => kolicinaTrebovaneRobeInputValueChange(e)} />
 
                             <br /> <Button onClick={dodajTrebovanejRobe}>  Dodaj </Button>
                         </Col>

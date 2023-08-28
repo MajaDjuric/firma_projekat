@@ -28,9 +28,9 @@ INSERT INTO proizvodjac (id, pib, mb, naziv) VALUES (1, '100041221', '07557159',
 INSERT INTO proizvodjac (id, pib, mb, naziv) VALUES (2, '102698401', '17459660', 'KWS SRBIJA DOO');
 	
 INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman, naziv, ulaz, izlaz) 
-	VALUES(1, '2022-01-07', 'L', 1, 1700.00, 1, 3, 0, 1, 1, null, 'AXIAL',  120, 20);
+	VALUES(1, '2022-01-07', 'L', 1, 1700.00, 1, 3, 120, 1, 1, null, 'AXIAL',  120, 0);
 INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulaz, izlaz) 
-	VALUES(2, '2021-08-12', 'KG', 5, 2050.00, 1 , 2, 55, 1, 2 ,null,  'NORDOX WG',  100, 45);
+	VALUES(2, '2021-08-12', 'KG', 5, 2050.00, 1 , 2, 100, 1, 2 ,null,  'NORDOX WG',  100, 0);
 INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulaz, izlaz) 
 	VALUES(3, '2022-06-30', 'KG', 25, 5850.00, 2, 3, 1000, 2, 3,  'INITIO BIRD PROTECT', 'KWS KASHMIR', 1000, 0);
 	

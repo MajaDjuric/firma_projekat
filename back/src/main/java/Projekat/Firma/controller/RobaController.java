@@ -1,6 +1,7 @@
 package Projekat.Firma.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -23,7 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Projekat.Firma.dto.RobaDto;
 import Projekat.Firma.model.Roba;
+import Projekat.Firma.model.VrstaRobe;
+import Projekat.Firma.repository.VrstaRepository;
 import Projekat.Firma.service.RobaService;
+import Projekat.Firma.service.VrstaService;
 import Projekat.Firma.support.RobaDtoToRoba;
 import Projekat.Firma.support.RobaToRobaDto;
 
@@ -35,6 +39,9 @@ public class RobaController {
 	private RobaService robaService;
 	
 	@Autowired
+	private VrstaService vrstaService;
+	
+	@Autowired
 	private RobaToRobaDto toRobaDto;
 	
 	@Autowired
@@ -42,13 +49,14 @@ public class RobaController {
 
 //    @PreAuthorize("permitAll()")
 	@GetMapping
-	public ResponseEntity<List<RobaDto>> getAll (@RequestParam (required = false) String naziv,
+	public ResponseEntity<List<RobaDto>> getAll (@RequestParam (required = false) String vrsta,
+												 @RequestParam (required = false) String naziv,
 												 @RequestParam (required = false) Long proizvodjacId,
 												 @RequestParam (required = false) Double pakovanje,
 												 @RequestParam (required = false) String tretman,
-												 @RequestParam (required = false) Long  vrstaId,
 												 @RequestParam (required = false, defaultValue = "0") int pageNo){
-		Page<Roba> page = robaService.search(naziv, proizvodjacId, pakovanje, tretman, vrstaId, pageNo);
+		VrstaRobe vrstaRobe = vrstaService.findByNaziv(vrsta);
+		Page<Roba> page = robaService.search(vrstaRobe, naziv, proizvodjacId, pakovanje, tretman, pageNo);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("total-pages", Integer.toString(page.getTotalPages()));
 		return new ResponseEntity<>(toRobaDto.convert(page.getContent()), headers, HttpStatus.OK);
@@ -84,16 +92,16 @@ public class RobaController {
 	}
 	
     @PreAuthorize("permitAll()")
-	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RobaDto> update (@PathVariable Long id, @RequestBody RobaDto robaDto){
-		if (robaDto.getId() != id) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		Roba roba = toRoba.convert(robaDto);
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<RobaDto> update (@PathVariable Long id, @RequestBody Map <String, Double> requestBody){
+//		if (robaDto.getId() != id) {
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+		Roba roba = robaService.findOne(id);
+		Double prodajnaCena = requestBody.get("prodajnaCena");
+		roba.setProdajnaCena(prodajnaCena);
 		Roba izmenjenaRoba = robaService.update(roba);
 		return new ResponseEntity<>(toRobaDto.convert(izmenjenaRoba), HttpStatus.OK);	
 	}
-    
-
 	 
 	}

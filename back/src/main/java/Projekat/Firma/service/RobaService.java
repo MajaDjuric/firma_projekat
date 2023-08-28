@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import Projekat.Firma.model.Roba;
+import Projekat.Firma.model.VrstaRobe;
 
 public interface RobaService {
 
 	Roba findOne (Long id);
-	Page<Roba> search (String naziv, Long proizvodjacId, Double pakovanje, String tretman, Long vrstaId, int pageNo);
+	Page<Roba> search (VrstaRobe vrsta, String naziv, Long proizvodjacId, Double pakovanje, String tretman, int pageNo);
 	Roba save (Roba roba);
 	Roba update (Roba roba);
 	void delete (Long id);

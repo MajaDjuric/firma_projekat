@@ -24,6 +24,11 @@ public class JpaVrstaService implements VrstaService {
 	public List<VrstaRobe> findAll() {
 		return vrstaRepository.findAll();
 	}
+
+	@Override
+	public VrstaRobe findByNaziv(String naziv) {
+		return vrstaRepository.findByNaziv(naziv);
+	}
 	
 	
 }

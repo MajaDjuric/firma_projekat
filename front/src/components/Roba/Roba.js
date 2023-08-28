@@ -4,14 +4,15 @@ import { Button, Col, Form, Row, Table } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
 import RobaRow from './RobaRow';
 
-const Roba = () => {
+const Roba = (props) => {
 
     //navigate
     const navigate = useNavigate()
 
+    const vrstaRobe = props.vrstaRobe
+
     //state
     const [robas, setRobas] = useState([])
-    const [vrste, setVrste] = useState([])
     const [proizvodjaci, setProizvodjaci] = useState([])
     const [pageNo, setPageNo] = useState(0)
     const [totalPage, setTotalPage] = useState(0)
@@ -29,6 +30,7 @@ const Roba = () => {
 
         const config = {
             params: {
+                vrsta: vrstaRobe,
                 pageNo: nextPage,
                 naziv: parametriPretrage.naziv,
                 vrstaId: parametriPretrage.vrstaId,
@@ -52,21 +54,9 @@ const Roba = () => {
                 console.log(error);
                 alert('Doslo je do greske!')
             });
-    }, []);
+    }, [vrstaRobe]);
 
     // dobavljanje za pretragu
-    const getVrste = useCallback(() => {
-        Axios.get('/vrsteRobe')
-            .then(res => {
-                console.log(res);
-                setVrste(res.data)
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske!')
-            });
-    }, []);
-
     const getProizvodjaci = useCallback(() => {
         Axios.get('/proizvodjaci')
             .then(res => {
@@ -80,10 +70,9 @@ const Roba = () => {
     }, []);
 
     useEffect(() => {
-        getVrste();
         getProizvodjaci()
         getRoba(0)
-    }, [])
+    }, [vrstaRobe])
 
 
     //navigate na dodavanje
@@ -99,14 +88,6 @@ const Roba = () => {
     }
 
     //ispis za select
-    const vrsteSelect = () => {
-        return vrste.map(vrsta => {
-            return (
-                <option key={vrsta.id} value={vrsta.id}>{vrsta.naziv}</option>
-            )
-        })
-    }
-
     const proizvodjaciSelect = () => {
         return proizvodjaci.map(proizvodjac => {
             return (
@@ -149,15 +130,6 @@ const Roba = () => {
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Label>Vrsta</Form.Label>
-                            <Form.Select name="vrstaId" onChange={(e) => onInputChange(e)}>
-                                <option value={''}></option>
-                                {vrsteSelect()}
-                            </Form.Select>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
                             <Form.Label>Proizvodjac</Form.Label>
                             <Form.Select name="proizvodjacId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
@@ -187,7 +159,6 @@ const Roba = () => {
     //krajnji ispis
     return (
         <Col>
-            {/* <Row><h1>Vina</h1></Row> */}
             <Row>
                 {renderPretraga()}
             </Row>
@@ -209,16 +180,15 @@ const Roba = () => {
                         <tr>
                             <th>Ident</th>
                             <th>Naziv</th>
-                            <th>Vrsta</th>
                             <th>Tip</th>
                             <th>Proizvodjac</th>
                             <th>Pakovanje</th>
                             <th>Jedinica mere</th>
-                            <th>Tretman</th>
-                            <th>Prodajna cena</th>
+                            {vrstaRobe == 'SEMENA' ? <th>Tretman</th> : null}
                             <th>Ulaz</th>
                             <th>Izlaz</th>
                             <th>Stanje</th>
+                            <th colSpan={2} >Prodajna cena</th>
                             {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' ? <th>Broj preostalih flasa</th> : null} */}
                         </tr>
                     </thead>

@@ -35,7 +35,7 @@ public class Roba {
 	private Proizvodjac proizvodjac;
 
 	@Column
-	private double prodajnaCena; //bez pdv-a
+	private double prodajnaCena; //bez pdv-a  
 	
 	@Column
 	private int ulaz;

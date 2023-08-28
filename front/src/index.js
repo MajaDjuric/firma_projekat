@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from 'react-dom/client';
 import { Route, Link, HashRouter as Router, Routes } from "react-router-dom";
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Container, Button } from "react-bootstrap";
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -29,11 +29,12 @@ const App = () => {
       <>
         <Router>
           <Navbar expand bg="dark" variant="dark">
-            {/* <Navbar.Brand as={Link} to="/">
-                JWD64
-            </Navbar.Brand> */}
             <Nav>
-              <Nav.Link as={Link} to="/roba">Roba</Nav.Link>
+              <NavDropdown title="Roba" id="basic-nav-dropdown">
+                <NavDropdown.Item as={Link} to="/roba/pesticidi">Pesticidi</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/roba/semena">Semena</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/roba/djubriva">Đubriva</NavDropdown.Item>
+              </NavDropdown>
               <Nav.Link as={Link} to="/ulazi">Ulazi</Nav.Link>
               <Nav.Link as={Link} to="/trebovanja">Trebovanja</Nav.Link>
               <Nav.Link as={Link} to="/dispozicije">Dispozicije</Nav.Link>
@@ -43,7 +44,9 @@ const App = () => {
           <Container style={{ paddingTop: "25px" }}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/roba" element={<Roba />} />
+              <Route path="/roba/pesticidi" element={<Roba vrstaRobe="PESTICIDI" />} />
+              <Route path="/roba/semena" element={<Roba vrstaRobe="SEMENA" />} />
+              <Route path="/roba/djubriva" element={<Roba vrstaRobe="DJUBRIVA" />} />
               <Route path="/ulazi" element={<Ulazi />} />
               <Route path="/trebovanja" element={<Trebovanja />} />
               <Route path="/trebovanja/:id" element={<Trebovanja />} />
