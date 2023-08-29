@@ -125,13 +125,13 @@ const Roba = (props) => {
                     <Row>
                         <Col>
                             <Form.Label>Naziv proizvoda</Form.Label>
-                            <Form.Control type="text" name="naziv" onChange={(e) => onInputChange(e)}></Form.Control>
+                            <Form.Control style={{ width: '300px' }} type="text" name="naziv" onChange={(e) => onInputChange(e)}></Form.Control>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
                             <Form.Label>Proizvodjac</Form.Label>
-                            <Form.Select name="proizvodjacId" onChange={(e) => onInputChange(e)}>
+                            <Form.Select style={{ width: '300px' }} name="proizvodjacId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
                                 {proizvodjaciSelect()}
                             </Form.Select>
@@ -140,15 +140,16 @@ const Roba = (props) => {
                     <Row>
                         <Col>
                             <Form.Label>Pakovanje</Form.Label>
-                            <Form.Control type="number" name="pakovanje" onChange={(e) => onInputChange(e)}></Form.Control>
+                            <Form.Control style={{ width: '300px' }} type="number" name="pakovanje" onChange={(e) => onInputChange(e)}></Form.Control>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <Form.Label>Tretman</Form.Label>
-                            <Form.Control type="text" name="tretman" onChange={(e) => onInputChange(e)}></Form.Control>
-                        </Col>
-                    </Row>
+                    {vrstaRobe == 'SEMENA' ?
+                        <Row>
+                            <Col>
+                                <Form.Label>Tretman</Form.Label>
+                                <Form.Control style={{ width: '300px' }} type="text" name="tretman" onChange={(e) => onInputChange(e)}></Form.Control>
+                            </Col>
+                        </Row> : null}
                 </Form>
 
             </>

@@ -12,4 +12,5 @@ public interface UlazRobeService {
 	UlazRobe save (UlazRobe ulazRobe);
 	UlazRobe update (UlazRobe ulazRobe);
 	void delete (Long id);
+	UlazRobe search (Long ulazId, Long robaId);
 }

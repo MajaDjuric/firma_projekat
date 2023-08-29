@@ -135,7 +135,7 @@ const Dispozicije = () => {
                             <td><Button variant='primary' disabled={dispozicija.isporuceno} onClick={() => navigate('/trebovanja/' + dispozicija.id)}>Dodaj trebovanja</Button></td>
                         </>) :
                         (<>
-                            <td><FormCheck style={{ display: "flex", justifyContent: "center" }} defaultChecked={dispozicija.isporuceno}></FormCheck></td>
+                            {dispozicija.isporuceno ? <td><FormCheck style={{ display: "flex", justifyContent: "center" }} checked /></td> : <td></td>}
                             <td><Button variant='success' onClick={() => window.open('/#/dispozicija/' + dispozicija.id)}>Detaljnije</Button></td>
                         </>)
                     }

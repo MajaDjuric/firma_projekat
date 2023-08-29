@@ -155,46 +155,63 @@ const Dodavanje = () => {
         <Row>
             <Col></Col>
             <Col xs="12" sm="10" md="8">
-                <h1>Dodavanje</h1>
                 <Form>
-                    <Form.Label htmlFor="naziv" >Naziv proizvoda</Form.Label>
-                    <Form.Control name="naziv" id="naziv" type="text" onChange={(e) => inputValueChange(e)} />
-                    <Form.Label htmlFor="vrstaId">Vrsta robe</Form.Label>
-                    <Form.Select name="vrstaId" onChange={(e) => vrstaOnChange(e)}>
-                        <option value={""}></option>
-                        {vrsteSelect()}
-                    </Form.Select>
-                    <Form.Label htmlFor="tipId">Tip robe</Form.Label>
-                    <Form.Select disabled={roba.vrstaId == ''} name="tipId" onChange={(e) => inputValueChange(e)}>
-                        <option value={""}></option>
-                        {tipoviSelect()}
-                    </Form.Select>
+                    <Row>
+                        <Col>
+                            <Form.Label htmlFor="naziv" >Naziv proizvoda</Form.Label>
+                            <Form.Control style={{ width: "400px" }} name="naziv" id="naziv" type="text" onChange={(e) => inputValueChange(e)} />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col style={{ marginRight: '-40px' }}>
+                            <Form.Label htmlFor="vrstaId">Vrsta robe</Form.Label>
+                            <Form.Select style={{ width: "400px" }} name="vrstaId" onChange={(e) => vrstaOnChange(e)}>
+                                <option value={""}></option>
+                                {vrsteSelect()}
+                            </Form.Select>
+                        </Col>
+                        <Col>
+                            <Form.Label htmlFor="tipId">Tip robe</Form.Label>
+                            <Form.Select style={{ width: "400px" }} disabled={roba.vrstaId == ''} name="tipId" onChange={(e) => inputValueChange(e)}>
+                                <option value={""}></option>
+                                {tipoviSelect()}
+                            </Form.Select>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Label hidden={roba.vrstaId != 2} htmlFor="tretman">Tretman</Form.Label>
+                            <Form.Control style={{ width: "400px" }} hidden={roba.vrstaId != 2} name="tretman" onChange={(e) => inputValueChange(e)}></Form.Control>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col style={{ marginRight: '-40px' }}>
+                            <Form.Label htmlFor="pakovanje">Pakovanje</Form.Label>
+                            <Form.Control style={{ width: "400px" }} name="pakovanje" id="pakovanje" type="text" onChange={(e) => inputValueChange(e)} />
+                        </Col>
+                        <Col>
+                            <Form.Label htmlFor="jedinicaMere">Jedinica mere</Form.Label>
+                            <Form.Select style={{ width: "80px" }} name="jedinicaMere" onChange={(e) => inputValueChange(e)}>
+                                <option value={""}></option>
+                                <option value={"KG"}>KG</option>
+                                <option value={"L"}>L</option>
+                                <option value={"G"}>G</option>
+                                <option value={"ML"}>ML</option>
+                            </Form.Select>
+                        </Col>
+                    </Row>
                     <Form.Label htmlFor="proizvodjacId">Proizvodjac</Form.Label>
-                    <Form.Select name="proizvodjacId" onChange={(e) => inputValueChange(e)}>
+                    <Form.Select style={{ width: "400px" }} name="proizvodjacId" onChange={(e) => inputValueChange(e)}>
                         <option value={""}></option>
                         {proizvodjaciSelect()}
                     </Form.Select>
-                    <Form.Label htmlFor="ulaznaCena">Ulazna cena</Form.Label>
-                    <Form.Control name="ulaznaCena" id="ulaznaCena" type="text" onChange={(e) => inputValueChange(e)} />
                     <Form.Label htmlFor="prodajnaCena">Prodajna cena</Form.Label>
-                    <Form.Control name="prodajnaCena" id="prodajnaCena" type="text" onChange={(e) => inputValueChange(e)} />
-                    <Form.Label htmlFor="pakovanje">Pakovanje</Form.Label>
-                    <Form.Control name="pakovanje" id="pakovanje" type="text" onChange={(e) => inputValueChange(e)} />
-                    <Form.Label htmlFor="jedinicaMere">Jedinica mere</Form.Label>
-                    <Form.Select name="jedinicaMere" onChange={(e) => inputValueChange(e)}>
-                        <option value={""}></option>
-                        <option value={"KG"}>KG</option>
-                        <option value={"L"}>L</option>
-                        <option value={"G"}>G</option>
-                        <option value={"ML"}>ML</option>
-                    </Form.Select>
-                    <Form.Label hidden={roba.vrstaId != 2} htmlFor="tretman">Tretman</Form.Label>
-                    <Form.Control hidden={roba.vrstaId != 2} name="tretman" onChange={(e) => inputValueChange(e)}></Form.Control>
+                    <Form.Control style={{ width: "400px" }} name="prodajnaCena" id="prodajnaCena" type="text" onChange={(e) => inputValueChange(e)} />
                     <br /> <br />  <Button onClick={dodaj}> Kreiraj </Button>
                 </Form>
             </Col>
             <Col></Col>
-        </Row>
+        </Row >
     )
 }
 

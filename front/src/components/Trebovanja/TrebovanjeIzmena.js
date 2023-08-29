@@ -155,15 +155,17 @@ const IzmenaTrebovanja = () => {
         return trebovanjaRobe.map((trebovanjeRobe, index) => {
             return (
                 <tr onClick={() => trebovanjeRobe.disponirano ? window.open('/#/dispozicija/' + trebovanjeRobe.dispozicijaId) : null} key={trebovanjeRobe.id} >
-                    <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{index + 1}</td>
-                    <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaNaziv}</td>
-                    <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaPakovanje}</td>
-                    <td style={trebovanjeRobe.disponirano ? { color: "red" } : {}}>{trebovanjeRobe.robaJedinicaMere}</td>
+
+                    <td>{index + 1}</td>
+                    <td>{trebovanjeRobe.robaNaziv}</td>
+                    <td>{trebovanjeRobe.robaPakovanje}</td>
+                    <td >{trebovanjeRobe.robaJedinicaMere}</td>
                     {
                         window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanjeRobe.disponirano ? <td><Form.Control style={{ width: 120 }} placeholder={trebovanjeRobe.kolicina}
-                            name="kolicina" type="number" onChange={(e) => kolicinaOnChange(e)} /></td> : <td style={trebovanjeRobe.disponirano ? { color: 'red' } : {}}  > {trebovanjeRobe.kolicina}</td>
+                            name="kolicina" type="number" onChange={(e) => kolicinaOnChange(e)} /></td> : <td> {trebovanjeRobe.kolicina}</td>
                     }
-
+                    {trebovanjeRobe.disponirano ? <td><FormCheck checked /> </td> : <td></td>}
+                    {trebovanjeRobe.isporuceno ? <td><FormCheck checked /> </td> : <td></td>}
                     {
                         window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanjeRobe.disponirano ?
                             (<> <td><Button style={{ marginRight: '10px' }} variant="warning" disabled={!izmenaButton} onClick={() => izmeni(trebovanjeRobe.id)}>Izmeni</Button>
@@ -210,6 +212,8 @@ const IzmenaTrebovanja = () => {
                             <th>Pakovanje</th>
                             <th>Jedinica mere</th>
                             <th>Kolicina</th>
+                            <th >Disponirano</th>
+                            <th >Isporuceno</th>
                             <th></th>
                             <th></th>
                         </tr>

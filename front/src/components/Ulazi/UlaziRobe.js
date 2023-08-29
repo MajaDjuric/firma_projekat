@@ -81,10 +81,10 @@ const UlaziRobe = (props) => {
                     <td>{ulazRobe.robaPakovanje}</td>
                     <td>{ulazRobe.robaJedinicaMere}</td>
                     <td>{ulazRobe.kolicina}</td>
-                    <td>{ulazRobe.cenaPoJediniciMere}</td>
+                    <td>{ulazRobe.cenaPoJediniciMere.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td>{ulazRobe.pdv}</td>
                     <td>{ulazRobe.rabat}</td>
-                    <td>{ulazRobe.krajnjaCenaPoJediniciMere}</td>
+                    <td>{ulazRobe.krajnjaCenaPoJediniciMere.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td>{ulazRobe.krajnjaCena.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     {window.localStorage.role == 'ROLE_FINANSIJE' ?
                         <td><Button variant='warning'>Izmeni</Button></td> : null}

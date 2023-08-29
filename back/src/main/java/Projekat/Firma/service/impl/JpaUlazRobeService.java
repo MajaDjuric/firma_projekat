@@ -5,6 +5,8 @@ import java.util.List;
 import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import Projekat.Firma.model.UlazRobe;
@@ -45,6 +47,11 @@ public class JpaUlazRobeService implements UlazRobeService{
 	@Override
 	public 	List<UlazRobe> findOneByUlazId(Long id) {
 		return ulazRobeRepository.findOneByUlazId(id);
+	}
+
+	@Override
+	public UlazRobe search(Long ulazId, Long robaId) {
+		return ulazRobeRepository.search(ulazId, robaId);
 	}
 
 }

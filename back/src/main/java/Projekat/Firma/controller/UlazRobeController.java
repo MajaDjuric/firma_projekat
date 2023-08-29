@@ -61,7 +61,14 @@ public class UlazRobeController {
 		return new ResponseEntity<> (toUlazRobeDto.convert(ulaziRobe), HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value = "/{id}")
+	@GetMapping(value = "/{ulazId}/{robaId}") //id ulaza i id robe
+	public ResponseEntity<Integer> getKolicina (@PathVariable Long ulazId, @PathVariable Long robaId){
+		UlazRobe ulazRobe = ulazRobeService.search(ulazId, robaId);
+		Integer kolicina = ulazRobe.getKolicina();
+		return new ResponseEntity<> (kolicina, HttpStatus.OK); 
+	}
+	
+	@DeleteMapping(value = "/{id}") 
 	public ResponseEntity<Void> delete (@PathVariable Long id){
 		UlazRobe ulazRobe = ulazRobeService.findOne(id);
 		if (ulazRobe == null) {

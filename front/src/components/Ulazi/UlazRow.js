@@ -7,15 +7,11 @@ import React, { useCallback, useEffect, useState } from "react";
 const UlazRow = (props) => {
 
     const ulazId = props.ulaz.id;
+    const robaId = props.robaId
 
     ///navigate
     var navigate = useNavigate()
-
-    //putanja do izmene
-    // const goToIzmena = () => {
-    //     navigate('/vina/izmena/' + vinoId);
-    // }
-
+    const [kolicina, setKolicina] = useState('')
 
     //brisanje 
     const deleteUlaz = () => {
@@ -31,12 +27,25 @@ const UlazRow = (props) => {
             });
     }
 
+    //dobavljanje kolicine kod pretrage po nazivu robe
+    const getKolicina = () => {
+        if (robaId != '') {
+            Axios.get('/ulaziRobe/' + ulazId + '/' + robaId)
+                .then(res => {
+                    console.log(res);
+                    setKolicina(res.data)
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert('Doslo je do greske, pokusajte ponovo!');
+                });
+        }
+    }
 
-    //krajnji ispis
+    useEffect(() => {
+        getKolicina()
+    }, [robaId])
 
-    // if( window.localStorage.getItem('role') == 'ROLE_KORISNIK' && props.vino.brojDostupnihFlasa <= 0){
-    //     return null
-    // }
 
     const formatDatuma = (datum) => {
         datum = new Date(props.ulaz.datumUlaza)
@@ -53,14 +62,7 @@ const UlazRow = (props) => {
             <td>{props.ulaz.brojFakture}</td>
             <td>{props.ulaz.brojOtpremnice}</td>
             <td>{props.ulaz.proizvodjacNaziv}</td>
-
-            {/* <td><Button variant="warning" onClick={goToIzmena}>Edit</Button></td> */}
-
-            {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' && props.vino.brojDostupnihFlasa < 10 ? (
-             <React.Fragment key="adminElements">
-            <td><input  onChange={(e) => onChangeBrojFlasa(e)} style={{ width: '40px' }} type="text"></input></td>
-            <td><Button variant="primary" onClick={() => izmeni(props.vino.id)} >Naruci</Button></td>
-            </React.Fragment>): null} */}
+            {robaId != '' ? <td>{kolicina}</td> : null}
         </tr>
     )
 }

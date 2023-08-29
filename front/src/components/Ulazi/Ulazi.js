@@ -95,7 +95,7 @@ const Ulazi = () => {
     //ispis redova u tabeli
     const renderUlazi = () => {
         return ulazi.map((ulaz) => {
-            return <UlazRow key={ulaz.id} ulaz={ulaz}></UlazRow>
+            return <UlazRow key={ulaz.id} ulaz={ulaz} robaId={parametriPretrage.robaId}></UlazRow>
         })
     }
 
@@ -126,6 +126,7 @@ const Ulazi = () => {
         parametriCopy[name] = value
         setParametriPretrage(parametriCopy)
         getUlazi(0)
+        console.log(value)
     }
 
 
@@ -144,52 +145,39 @@ const Ulazi = () => {
 
                 <Form hidden={!hidden}>
                     <Row>
-                        <Col>
+                        <Col style={{ marginRight: '-670px' }}>
                             <Form.Label>Roba</Form.Label>
-                            <Form.Select name="robaId" onChange={(e) => onInputChange(e)}>
+                            <Form.Select style={{ width: '280px' }} name="robaId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
                                 {robaSelect()}
                             </Form.Select>
                         </Col>
-                    </Row>
-                    <Row>
                         <Col>
                             <Form.Label>Proizvodjac</Form.Label>
-                            <Form.Select name="proizvodjacId" onChange={(e) => onInputChange(e)}>
+                            <Form.Select style={{ width: '280px' }} name="proizvodjacId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
                                 {proizvodjaciSelect()}
                             </Form.Select>
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
-                            <Form.Label>Proizvodjac</Form.Label>
-                            <Form.Select name="proizvodjacId" onChange={(e) => onInputChange(e)}>
-                                <option value={''}></option>
-                                {proizvodjaciSelect()}
-                            </Form.Select>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
+                        <Col style={{ marginRight: '-670px' }}>
                             <Form.Label>Broj fakture</Form.Label>
-                            <Form.Control type="text" name="brojFakture" onChange={(e) => onInputChange(e)}></Form.Control>
+                            <Form.Control style={{ width: '280px' }} type="text" name="brojFakture" onChange={(e) => onInputChange(e)}></Form.Control>
                         </Col>
-                    </Row>
-                    <Row>
                         <Col>
                             <Form.Label>Broj otpremnice</Form.Label>
-                            <Form.Control type="text" name="brojOtpremnice" onChange={(e) => onInputChange(e)}></Form.Control>
+                            <Form.Control style={{ width: '280px' }} type="text" name="brojOtpremnice" onChange={(e) => onInputChange(e)}></Form.Control>
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col style={{ marginRight: '-670px' }}>
                             <Form.Label>Min datum ulaza</Form.Label>
-                            <Form.Control type="date" name="minDatumUlaza" onChange={(e) => onInputChange(e)}></Form.Control>
+                            <Form.Control style={{ width: '280px' }} type="date" name="minDatumUlaza" onChange={(e) => onInputChange(e)}></Form.Control>
                         </Col>
                         <Col>
                             <Form.Label>Max datum ulaza</Form.Label>
-                            <Form.Control type="date" name="maxDatumUlaza" onChange={(e) => onInputChange(e)}></Form.Control>
+                            <Form.Control style={{ width: '280px' }} type="date" name="maxDatumUlaza" onChange={(e) => onInputChange(e)}></Form.Control>
                         </Col>
                     </Row>
                 </Form>
@@ -227,7 +215,7 @@ const Ulazi = () => {
                             <th>Broj fakture</th>
                             <th>Broj otpremnice</th>
                             <th>Dobavljac</th>
-                            {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' ? <th>Broj preostalih flasa</th> : null} */}
+                            {parametriPretrage.robaId != '' ? <th>Količina</th> : null}
                         </tr>
                     </thead>
                     <tbody>

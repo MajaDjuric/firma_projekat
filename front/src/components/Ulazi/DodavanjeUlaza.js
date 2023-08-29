@@ -131,13 +131,13 @@ const DodavanjeUlaza = () => {
                     <Row>
                         <Col xs="12" sm="10" md="8">
                             <Form.Label htmlFor="datumUlaza">Datum ulaza</Form.Label>
-                            <Form.Control name="datumUlaza" id="datumUlaza" type="date" onChange={(e) => inputValueChange(e)} />
+                            <Form.Control style={{ width: '400px' }} name="datumUlaza" id="datumUlaza" type="date" onChange={(e) => inputValueChange(e)} />
                             <Form.Label htmlFor="brojOtpremnice">Broj otpremnice </Form.Label>
-                            <Form.Control name="brojOtpremnice" id="brojOtpremnice" type="text" onChange={(e) => inputValueChange(e)} />
+                            <Form.Control style={{ width: '400px' }} name="brojOtpremnice" id="brojOtpremnice" type="text" onChange={(e) => inputValueChange(e)} />
                             <Form.Label htmlFor="brojFakture">Broj fakture</Form.Label>
-                            <Form.Control name="brojFakture" id="brojFakture" type="text" onChange={(e) => inputValueChange(e)} />
+                            <Form.Control style={{ width: '400px' }} name="brojFakture" id="brojFakture" type="text" onChange={(e) => inputValueChange(e)} />
                             <Form.Label htmlFor="proizvodjacId">Dobavljac</Form.Label>
-                            <Form.Select name="proizvodjacId" onChange={(e) => inputValueChange(e)}>
+                            <Form.Select style={{ width: '400px' }} name="proizvodjacId" onChange={(e) => inputValueChange(e)}>
                                 <option value={""}></option>
                                 {proizvodjaciSelect()}
                             </Form.Select>

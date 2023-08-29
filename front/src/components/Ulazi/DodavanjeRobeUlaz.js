@@ -213,7 +213,7 @@ const DodavanjeRobeUlaz = (props) => {
                         {ispisListe()}
                     </tbody>
                 </Table>
-                <br /> <br />  <Button onClick={dodaj}> Kreiraj </Button>
+                <br /> <br />  <Button onClick={() => navigate('/ulazi')}> Završi </Button>
             </Col>
             <Col></Col>
         </Row>
