@@ -2,7 +2,6 @@ import Axios from '../../apis/Axios';
 import { useCallback, useEffect, useState } from "react"
 import { Button, Col, Form, Row, Table } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
-import RobaRow from './UlazRow';
 import UlazRow from './UlazRow';
 
 const Ulazi = () => {
@@ -34,13 +33,16 @@ const Ulazi = () => {
                 pageNo: nextPage,
                 brojFakture: parametriPretrage.brojFakture,
                 brojOtpremnice: parametriPretrage.brojOtpremnice,
-                minDatumUlaza: parametriPretrage.minDatumUlaza,
-                maxDatumUlaza: parametriPretrage.maxDatumUlaza,
                 proizvodjacId: parametriPretrage.proizvodjacId,
                 robaId: parametriPretrage.robaId
             }
         }
-
+        if (parametriPretrage.minDatumUlaza != "" && parametriPretrage.minDatumUlaza != null) {
+            config.params.minDatumUlaza = parametriPretrage.minDatumUlaza
+        }
+        if (parametriPretrage.maxDatumUlaza != "" && parametriPretrage.maxDatumUlaza != null) {
+            config.params.maxDatumUlaza = parametriPretrage.maxDatumUlaza
+        }
         Axios.get('/ulazi', config)
             .then(res => {
                 console.log(res);
@@ -129,19 +131,14 @@ const Ulazi = () => {
         console.log(value)
     }
 
-
     //forma za pretragu
     const renderPretraga = () => {
         return (
             <>
-
                 <div style={{ display: 'flex' }}>
                     <Form.Check onChange={() => setHidden(!hidden)} ></Form.Check>
                     <Form.Label htmlFor='checkbox'> &nbsp; Prikazi pretragu</Form.Label>
                 </div>
-
-                {/* <Form  hidden={!hidden} > */}
-                {/* ako hocu obrnuto sklonim ! */}
 
                 <Form hidden={!hidden}>
                     <Row>
@@ -181,16 +178,13 @@ const Ulazi = () => {
                         </Col>
                     </Row>
                 </Form>
-
             </>
         )
     }
 
-
     //krajnji ispis
     return (
         <Col>
-            {/* <Row><h1>Vina</h1></Row> */}
             <Row>
                 {renderPretraga()}
             </Row>
@@ -203,7 +197,7 @@ const Ulazi = () => {
                     </Col>
                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button disabled={pageNo == 0} onClick={() => getUlazi(pageNo - 1)}>Prethodna</Button>
-                        <Button disabled={pageNo + 1 == totalPage || ulazi.length == 0} onClick={() => getUlazi(pageNo + 1)}>Sledeca</Button>
+                        <Button style={{ marginLeft: '8px' }} disabled={pageNo + 1 == totalPage || ulazi.length == 0} onClick={() => getUlazi(pageNo + 1)}>Sledeca</Button>
                     </Col>
                 </Row>
 
@@ -229,5 +223,3 @@ const Ulazi = () => {
 }
 
 export default Ulazi
-
-// {window.localStorage.getItem('role') == 'ROLE_ADMIN' ?

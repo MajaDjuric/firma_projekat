@@ -1,15 +1,8 @@
-
 import { Button, Col, Row, Form } from "react-bootstrap"
 import Axios from "../../apis/Axios"
 import { useCallback, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
 
 const Dopuna = (props) => {
-
-    //navigate
-    const navigate = useNavigate()
-
-    // const params = useParams()
 
     let trebovanjeId = props.trebovanjeId
 
@@ -21,14 +14,10 @@ const Dopuna = (props) => {
         kolicina: ''
     }
 
-
-    //init
-
     const [dopuna, setDopuna] = useState(init)
     const [roba, setRoba] = useState([])
-    const [svaTrebovanjaRobeIds, setSvaTrebovanjaRobeIds] = useState(props.svaTrebovanjaRobeIds)
-    const [stanjeRobe, setStanjeRobe] = useState(0)
-
+    const [stanjeRobe, setStanjeRobe] = useState('')
+    const [validno, setValidno] = useState(false)
 
     //dodavanje 
     const dodaj = () => {
@@ -49,13 +38,10 @@ const Dopuna = (props) => {
             })
             .catch(error => {
                 console.log(error)
-                if (svaTrebovanjaRobeIds.includes(dto.robaId)) {
-                    alert('Navedena roba je vec trebovana')
-                }
-                else if (stanjeRobe < dopuna.kolicina) {
+                if (stanjeRobe < dopuna.kolicina) {
                     alert('Nema dovoljno robe na stanju')
                 } else {
-                    alert('Doslo je do greske, pokusajte ponovo!')
+                    alert('Navedena roba je vec trebovana')
                 }
             })
     }
@@ -97,15 +83,14 @@ const Dopuna = (props) => {
         })
     }
 
-
     //validacija
-    // const validiraj = () => {
-    //     if (vino.ime == '' || vino.opis == '') {
-    //         setValidno(false)
-    //     } else {
-    //         setValidno(true)
-    //     }
-    // }
+    const validiraj = () => {
+        if (dopuna.robaId == '' || dopuna.kolicina == '') {
+            setValidno(false)
+        } else {
+            setValidno(true)
+        }
+    }
 
     //onChange
     const inputValueChange = (e) => {
@@ -115,30 +100,32 @@ const Dopuna = (props) => {
         let dopunaCopy = dopuna
         dopunaCopy[name] = value
         setDopuna(dopunaCopy)
-        // validiraj()
+        validiraj()
     }
 
     const proizvodInputValueChange = (e) => {
         setDopuna({ ...dopuna, robaId: e.target.value })
         getOdabraniProizvod(e.target.value)
-        // validiraj()
+        validiraj()
     }
 
     return (
         <>
             <Form>
-                <Row>
+                <Row style={{ display: 'flex', alignItems: 'flex-end' }}>
                     <Col>
                         <Form.Label htmlFor="robaId">Proizvod</Form.Label>
-                        <Form.Select name="robaId" onChange={(e) => proizvodInputValueChange(e)}>
+                        <Form.Select style={{ width: '400px' }} name="robaId" onChange={(e) => proizvodInputValueChange(e)}>
                             <option value={""}></option>
                             {robaSelect()}
                         </Form.Select>
+                    </Col>
+                    <Col style={{ marginRight: '-150px' }}>
                         <Form.Label htmlFor="kolicina">Kolicina</Form.Label>
-                        <Form.Control name="kolicina" id="kolicina" type="number" onChange={(e) => inputValueChange(e)} />
-
-                        <br /> <Button onClick={dodaj}> Dodaj </Button>
-
+                        <Form.Control style={{ width: '100px' }} name="kolicina" id="kolicina" placeholder={stanjeRobe} type="number" onChange={(e) => inputValueChange(e)} />
+                    </Col>
+                    <Col>
+                        <Button disabled={!validno} onClick={dodaj}> Dodaj </Button>
                     </Col>
                 </Row>
 

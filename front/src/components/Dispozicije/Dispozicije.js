@@ -14,12 +14,12 @@ const Dispozicije = () => {
         vozilo: { id: '' }
     }
 
+
     //state
     const [dispozicije, setDispozicije] = useState([])
     const [dispozicija, setDispozicija] = useState(dispozicijaInit)
     const [pageNo, setPageNo] = useState(0)
     const [totalPage, setTotalPage] = useState(0)
-    const [hidden, setHidden] = useState(false)
     const [hiddenDodavanje, setHiddenDodavanje] = useState(false)
     const [vozaci, setVozaci] = useState([])
     const [vozila, setVozila] = useState([])
@@ -40,7 +40,6 @@ const Dispozicije = () => {
         Axios.post('/dispozicije', dto)
             .then(res => {
                 console.log(res)
-                alert('Uspesno dodavanje dispozicije!')
                 window.location.reload()
             })
             .catch(error => {
@@ -128,14 +127,13 @@ const Dispozicije = () => {
                     <td>{dispozicija.vozacImeIPrezime}</td>
                     <td>{dispozicija.vozilo.markaITip}</td>
                     <td>{dispozicija.vozilo.registracija}</td>
+                    {dispozicija.isporuceno ? <td><FormCheck style={{ display: "flex", justifyContent: "center" }} checked></FormCheck></td> : <td></td>}
                     {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ?
                         (<>
-                            <td><FormCheck style={{ display: "flex", justifyContent: "center" }} defaultChecked={dispozicija.isporuceno}></FormCheck></td>
                             <td><Button variant='success' onClick={() => navigate('/dispozicija/' + dispozicija.id)}>Detaljnije</Button></td>
                             <td><Button variant='primary' disabled={dispozicija.isporuceno} onClick={() => navigate('/trebovanja/' + dispozicija.id)}>Dodaj trebovanja</Button></td>
                         </>) :
                         (<>
-                            {dispozicija.isporuceno ? <td><FormCheck style={{ display: "flex", justifyContent: "center" }} checked /></td> : <td></td>}
                             <td><Button variant='success' onClick={() => window.open('/#/dispozicija/' + dispozicija.id)}>Detaljnije</Button></td>
                         </>)
                     }
@@ -173,15 +171,14 @@ const Dispozicije = () => {
         })
     }
 
-
     const datumIsporukeInputChange = (e) => {
         setDispozicija({ ...dispozicija, datumIsporuke: e.target.value })
+        console.log(dispozicija.datumIsporuke)
     }
 
     const voziloInputChange = (e) => {
         setDispozicija({ ...dispozicija, vozilo: { id: e.target.value } })
     }
-
 
     const vozacIdInputChange = (e) => {
         setDispozicija({ ...dispozicija, vozacId: e.target.value })
@@ -194,13 +191,13 @@ const Dispozicije = () => {
                     <Row>
                         <Col xs="12" sm="10" md="8">
                             <Form.Label>Datum isporuke</Form.Label>
-                            <Form.Control name="datumIsporuke" type='date' onChange={(e) => datumIsporukeInputChange(e)} />
+                            <Form.Control style={{ width: '400px' }} name="datumIsporuke" type='date' onChange={(e) => datumIsporukeInputChange(e)} />
                         </Col>
                     </Row>
                     <Row>
                         <Col xs="12" sm="10" md="8">
                             <Form.Label>Vozilo</Form.Label>
-                            <Form.Select name="voziloId" onChange={(e) => voziloInputChange(e)}>
+                            <Form.Select style={{ width: '400px' }} name="voziloId" onChange={(e) => voziloInputChange(e)}>
                                 <option value={''}></option>
                                 {vozilaSelect()}
                             </Form.Select>
@@ -209,7 +206,7 @@ const Dispozicije = () => {
                     <Row>
                         <Col xs="12" sm="10" md="8">
                             <Form.Label>Vozac</Form.Label>
-                            <Form.Select name="vozacId" onChange={(e) => vozacIdInputChange(e)}>
+                            <Form.Select style={{ width: '400px' }} name="vozacId" onChange={(e) => vozacIdInputChange(e)}>
                                 <option value={''}></option>
                                 {vozaciSelect()}
                             </Form.Select>
@@ -217,7 +214,7 @@ const Dispozicije = () => {
                     </Row>
                     <br />
                     <Col xs="12" sm="10" md="8">
-                        <Button onClick={dodajDispoziciju}>Kreiraj</Button>
+                        <Button variant='success' onClick={dodajDispoziciju}>Kreiraj</Button>
                     </Col>
                 </Form>
             </>
@@ -231,9 +228,8 @@ const Dispozicije = () => {
                 <Form>
                     <Row>
                         <Col>
-                            <h5>Pretraga</h5>
-                            <Form.Label>Datum isporuke</Form.Label>
-                            <Form.Control name="datumIsporuke" type='date' onChange={(e) => onInputChange(e)} />
+                            <Form.Label>Pretraga po datumu isporuke</Form.Label>
+                            <Form.Control style={{ width: '400px' }} name="datumIsporuke" type='date' onChange={(e) => onInputChange(e)} />
                         </Col>
                     </Row>
                 </Form>
@@ -244,21 +240,21 @@ const Dispozicije = () => {
     //krajnji ispis
     return (
         <Col>
-            {/* <Row><h1>Vina</h1></Row> */}
             <Row>
                 <Col xs="12" sm="10" md="8">
                     {renderPretraga()}
                 </Col>
             </Row>
             <br /><br />
-            {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <Button onClick={() => setHiddenDodavanje(true)} hidden={hiddenDodavanje}>Kreiraj dispoziciju</Button> : null}
             <Row> <Col></Col> <Col xs="12" sm="10" md="8"></Col>{dodavanjeDispozicije()} </Row>
-            <br /><br />
+            <br />
             <Row><Col>
-                <Row>
+                <Row style={{ display: 'flex', alignItems: 'flex-end' }}>
                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <Button style={{ marginRight: '955px' }} variant='success' onClick={() => setHiddenDodavanje(true)} hidden={hiddenDodavanje}>Kreiraj dispoziciju</Button> : null}
+
                         <Button disabled={pageNo == 0} onClick={() => getDispozicije(pageNo - 1)}>Prethodna</Button>
-                        <Button disabled={pageNo + 1 == totalPage || dispozicije.length == 0} onClick={() => getDispozicije(pageNo + 1)}>Sledeca</Button>
+                        <Button style={{ marginLeft: '8px' }} disabled={pageNo + 1 == totalPage || dispozicije.length == 0} onClick={() => getDispozicije(pageNo + 1)}>Sledeca</Button>
                     </Col>
                 </Row>
 
@@ -271,7 +267,6 @@ const Dispozicije = () => {
                             <th>Vozilo</th>
                             <th>Registracija</th>
                             <th>Isporuceno</th>
-                            {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' ? <th>Broj preostalih flasa</th> : null} */}
                         </tr>
                     </thead>
                     <tbody>
@@ -285,5 +280,3 @@ const Dispozicije = () => {
 }
 
 export default Dispozicije
-
-// {window.localStorage.getItem('role') == 'ROLE_ADMIN' ?

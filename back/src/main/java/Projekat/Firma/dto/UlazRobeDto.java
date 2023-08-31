@@ -1,16 +1,29 @@
 package Projekat.Firma.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class UlazRobeDto {
 
 	private Long id;
 	private Long ulazId;
 	private String ulazBrojFakture;
+	
+	@NotNull
 	private Long robaId;
 	private double robaPakovanje;
 	private String robaNaziv;
 	private String robaJedinicaMere;
+	
+	@NotNull
+	@Positive
+	
 	private int kolicina;
+	
+	@NotNull
 	private double cenaPoJediniciMere;
+	
+	@NotNull
 	private double rabat;
 	private int pdv;
 	private double krajnjaCena;

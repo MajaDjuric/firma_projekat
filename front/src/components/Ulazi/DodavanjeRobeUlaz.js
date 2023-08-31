@@ -1,4 +1,3 @@
-
 import { Button, Col, Row, Form, Table } from "react-bootstrap"
 import Axios from "../../apis/Axios"
 import { useCallback, useEffect, useState } from "react"
@@ -19,13 +18,13 @@ const DodavanjeRobeUlaz = (props) => {
         pdv: '',
     }
 
+
     let idUlaza = props.idUlaza;
 
     const [roba, setRoba] = useState([])
     const [noviUlazRobe, setNoviUlazRobe] = useState(init)
     const [listaUlazaRobe, setListaUlazaRobe] = useState([])
     const [proizvod, setProizvod] = useState('')
-    const [noviUlazi, setNoviUlazi] = useState([])
 
     //dodavanje 
     const dodaj = () => {
@@ -47,8 +46,6 @@ const DodavanjeRobeUlaz = (props) => {
                 console.log('Before reset:', noviUlazRobe);
                 setNoviUlazRobe(init);
                 console.log('After reset:', noviUlazRobe);
-                // alert('Uspesno dodavanje!')
-                // navigate('/ulazi')
             })
             .catch(error => {
                 console.log(error)
@@ -109,7 +106,7 @@ const DodavanjeRobeUlaz = (props) => {
         let input = e.target
         let name = input.name
         let value = input.value
-        setNoviUlazRobe(prevState => ({   //This approach will make sure that you're always working with the latest state when updating individual fields.
+        setNoviUlazRobe(prevState => ({
             ...prevState,
             [name]: value
         }))
@@ -126,7 +123,6 @@ const DodavanjeRobeUlaz = (props) => {
         })
     }
 
-
     const ispisListe = () => {
         return listaUlazaRobe.map((ulazRobe, index) => {
             return (
@@ -140,7 +136,7 @@ const DodavanjeRobeUlaz = (props) => {
                     <td>{ulazRobe.pdv}</td>
                     <td>{ulazRobe.rabat}</td>
                     <td>{ulazRobe.krajnjaCenaPoJediniciMere}</td>
-                    <td>{ulazRobe.krajnjaCena}</td>
+                    <td>{ulazRobe.krajnjaCena.toFixed(2)}</td>
                 </tr>
             )
         })
@@ -151,7 +147,7 @@ const DodavanjeRobeUlaz = (props) => {
         return (
             <>
                 <Form>
-                    <Row>
+                    <Row style={{ display: 'flex', alignItems: 'flex-end' }}>
                         <Col>
                             <Form.Label htmlFor="robaId">Roba</Form.Label>
                             <Form.Select value={noviUlazRobe.robaId} style={{ width: "250px" }} name="robaId" onChange={(e) => inputValueChange(e)}>
@@ -189,7 +185,6 @@ const DodavanjeRobeUlaz = (props) => {
         <Row>
             <Col></Col>
             <Col xs="12" sm="10" md="8">
-                <h4>Dodavanje</h4>
                 <br />
                 {formaZaDodavanje()}
                 <br />

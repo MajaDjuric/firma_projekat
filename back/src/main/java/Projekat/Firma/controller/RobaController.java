@@ -83,7 +83,7 @@ public class RobaController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RobaDto> create (@Valid @RequestBody RobaDto robaDto){
 		Roba roba = toRoba.convert(robaDto);
@@ -91,12 +91,9 @@ public class RobaController {
 		return new ResponseEntity<>(toRobaDto.convert(novaRoba), HttpStatus.CREATED);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<RobaDto> update (@PathVariable Long id, @RequestBody Map <String, Double> requestBody){
-//		if (robaDto.getId() != id) {
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
 		Roba roba = robaService.findOne(id);
 		Double prodajnaCena = requestBody.get("prodajnaCena");
 		roba.setProdajnaCena(prodajnaCena);

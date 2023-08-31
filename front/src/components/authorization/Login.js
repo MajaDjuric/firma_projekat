@@ -21,15 +21,15 @@ const Login = () => {
                 <Form>
                     <Form.Group>
                         <Form.Label>Korisnicko ime</Form.Label>
-                        <Form.Control type="text" onChange={(e) => setUsername(e.target.value)} onKeyPress={handleKeyPress}></Form.Control>
+                        <Form.Control style={{ width: '400px' }} type="text" onChange={(e) => setUsername(e.target.value)} onKeyPress={handleKeyPress}></Form.Control>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Lozinka</Form.Label>
-                        <Form.Control type="password" onChange={(e) => setPassword(e.target.value)} onKeyPress={handleKeyPress}></Form.Control>
+                        <Form.Control style={{ width: '400px' }} type="password" onChange={(e) => setPassword(e.target.value)} onKeyPress={handleKeyPress}></Form.Control>
 
                     </Form.Group>
                 </Form>
-             <br/>   <Button onClick={() => login(username, password)}>Login</Button>
+                <br />   <Button onClick={() => login(username, password)}>Login</Button>
             </Col>
         </Row>
     )

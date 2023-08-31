@@ -1,9 +1,15 @@
 package Projekat.Firma.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class TrebovanjeRobeDto {
 
 	private Long id;
+	
+	@NotNull
 	private Long robaId;
+	
 	private String robaNaziv;
 	private double robaPakovanje;
 	private String robaJedinicaMere;
@@ -11,6 +17,9 @@ public class TrebovanjeRobeDto {
 	private boolean disponirano;
 	private long dispozicijaId;
 	private boolean isporuceno;
+	
+	@NotNull
+	@Positive
 	private int kolicina;
 	private KupacDto kupac;
 	public Long getId() {

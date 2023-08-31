@@ -59,7 +59,6 @@ const App = () => {
               <Route path="/dispozicije" element={<Dispozicije />} />
               <Route path="/kupci/dodavanje" element={<KupacDodavanje />} />
               <Route path="/ulaz/dodavanjeRobe" element={<DodavanjeUlaza />} />
-              {/* <Route path="/vina/izmena/:id" element={<Izmena />} />             */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Container>

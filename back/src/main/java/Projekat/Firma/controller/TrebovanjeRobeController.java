@@ -77,6 +77,7 @@ public class TrebovanjeRobeController {
 		return new ResponseEntity<>(toTrebovanjeRobeDto.convert(trebovanjaRobe),HttpStatus.OK);
 	}
 	
+
 	@GetMapping(value = "dispozicija/{id}")
 	public ResponseEntity<List<TrebovanjeRobeDto>> getByDispozicijaId (@PathVariable Long id){
 		List<TrebovanjeRobe> trebovanjaRobe = trebovanjeRobeService.findByDispozicijaId(id);
@@ -93,7 +94,7 @@ public class TrebovanjeRobeController {
 		return new ResponseEntity<>(toTrebovanjeRobeDto.convert(trebovanjeRobe), HttpStatus.OK);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('KOMERCIJALA')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete (@PathVariable Long id){
 		TrebovanjeRobe trebovanjeRobe  = trebovanjeRobeService.findOne(id);
@@ -110,7 +111,7 @@ public class TrebovanjeRobeController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('KOMERCIJALA')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrebovanjeRobeDto> create (@Valid @RequestBody TrebovanjeRobeDto trebovanjeRobeDto){
 		TrebovanjeRobe trebovanjeRobe = toTrebovanjeRobe.convert(trebovanjeRobeDto);
@@ -135,7 +136,7 @@ public class TrebovanjeRobeController {
 		return new ResponseEntity<>(toTrebovanjeRobeDto.convert(novoTrebovanjeRobe), HttpStatus.CREATED);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('KOMERCIJALA')")
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TrebovanjeRobeDto> update (@PathVariable Long id,  @RequestBody Map < String, Integer > requestBody){
 		TrebovanjeRobe trebovanjeRobe = trebovanjeRobeService.findOne(id);

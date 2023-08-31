@@ -28,11 +28,11 @@ INSERT INTO proizvodjac (id, pib, mb, naziv) VALUES (1, '100041221', '07557159',
 INSERT INTO proizvodjac (id, pib, mb, naziv) VALUES (2, '102698401', '17459660', 'KWS SRBIJA DOO');
 	
 INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman, naziv, ulaz, izlaz) 
-	VALUES(1, '2022-01-07', 'L', 1, 1700.00, 1, 3, 120, 1, 1, null, 'AXIAL',  120, 0);
+	VALUES(1, '2022-01-07', 'L', 1, 1700.00, 1, 3, 116, 1, 1, null, 'AXIAL',  120, 0);
 INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulaz, izlaz) 
-	VALUES(2, '2021-08-12', 'KG', 5, 2050.00, 1 , 2, 100, 1, 2 ,null,  'NORDOX WG',  100, 0);
+	VALUES(2, '2021-08-12', 'KG', 5, 2050.00, 1 , 2, 88, 1, 2 ,null,  'NORDOX WG',  100, 0);
 INSERT INTO roba (id, datum_proizvodnje, jedinica_mere, pakovanje, prodajna_cena, proizvodjac_id, rok_trajanja, stanje, vrsta_id, tip_id, tretman,  naziv, ulaz, izlaz) 
-	VALUES(3, '2022-06-30', 'KG', 25, 5850.00, 2, 3, 1000, 2, 3,  'INITIO BIRD PROTECT', 'KWS KASHMIR', 1000, 0);
+	VALUES(3, '2022-06-30', 'KG', 25, 5850.00, 2, 3, 998, 2, 3,  'INITIO BIRD PROTECT', 'KWS KASHMIR', 1000, 0);
 	
 INSERT INTO ulaz (id, broj_fakture, broj_otpremnice, datum_ulaza, proizvodjac_id) VALUES (1, 'S01-23', 'S01', '2023-04-08', 1);
 INSERT INTO ulaz (id, broj_fakture, broj_otpremnice, datum_ulaza, proizvodjac_id) VALUES (2, 'KWS02-23', 'KWS02', '2023-04-10', 2);
@@ -41,6 +41,8 @@ INSERT INTO kupac (id, adresa, grad, pib, mb, naziv, teren, komercijalista_id)
 	VALUES(1, 'Beogradska 146', '24415 Backi Vinogradi', '102453025', '08659206', 'ZZ PRIMA', 'Severna Backa', 1);
 INSERT INTO kupac (id, adresa, grad, pib, mb, naziv, teren, komercijalista_id)
 	VALUES(2, 'Put narodnih heroja 10', '24420 Kanjiza', '106830610', '20688866', 'AGRO METAL ALATI DOO', 'Severni Banat', 1);
+INSERT INTO kupac (id, adresa, grad, pib, mb, naziv, teren, komercijalista_id)
+	VALUES(3, 'Oslobođenja 93', '25284 Stanišić', '104692462', '20215925', 'AGRO CAR DOO', 'Srednja Bačka', 3);
 	
 INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (1, 2);
 INSERT INTO ulaz_roba (ulaz_id, roba_id) VALUES (1, 1); 
@@ -56,7 +58,7 @@ INSERT INTO trebovanje (id, komercijalista_id, kupac_id, disponirano, isporuceno
 INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (1, 1);
 INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (1, 2); 
 INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (2, 2);
-INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (2, 3);
+INSERT INTO trebovanje_roba (trebovanja_id, roba_id) VALUES (2, 3); 
 
 INSERT INTO trebovanje_robe (id, kolicina, roba_id, trebovanje_id, disponirano, isporuceno) VALUES (1, 4, 1, 1, false, false);
 INSERT INTO trebovanje_robe (id, kolicina, roba_id, trebovanje_id, disponirano, isporuceno) VALUES (2, 2, 2, 1, false, false);

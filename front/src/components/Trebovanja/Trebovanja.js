@@ -28,6 +28,20 @@ const Trebovanja = () => {
         robaId: ''
     })
 
+    //brisanje 
+    const deleteTrebovanja = (trebovanjeId) => {
+        Axios.delete('/trebovanja/' + trebovanjeId)
+            .then(res => {
+                console.log(res);
+                alert('Uspesno brisanje!');
+                window.location.reload()
+            })
+            .catch(error => {
+                console.log(error);
+                alert('Doslo je do greske, pokusajte ponovo!');
+            });
+    }
+
     //dobavljanje svih
     const getTrebovanja = useCallback((nextPage) => {
 
@@ -120,6 +134,7 @@ const Trebovanja = () => {
                     {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{trebovanje.kupacDto.naziv}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id)}>{trebovanje.kupacDto.naziv}</td>}
                     {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id + '/' + dispozicijaId)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td> : <td style={trebovanje.isporuceno ? { color: "red" } : {}} onClick={() => window.open('/#/trebovanje/izmena/' + trebovanje.id)}>{formatirajDatum(trebovanje.datumTrebovanja)}</td>}
                     {trebovanje.isporuceno ? <td><FormCheck checked /></td> : <td></td>}
+                    {window.localStorage.role == 'ROLE_KOMERCIJALA' ? <td><Button variant='danger' disabled={trebovanje.disponirano} onClick={() => deleteTrebovanja(trebovanje.id)}>Obriši</Button></td> : null}
                 </tr>
             )
         })
@@ -166,7 +181,7 @@ const Trebovanja = () => {
                     <Row>
                         <Col>
                             <Form.Label>Teren</Form.Label>
-                            <Form.Select name="teren" onChange={(e) => onInputChange(e)}>
+                            <Form.Select style={{ width: '300px' }} name="teren" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
                                 <option value={'Severna Backa'}>Severna Backa</option>
                                 <option value={'Severni Banat'}>Severni Banat</option>
@@ -176,7 +191,7 @@ const Trebovanja = () => {
                     <Row>
                         <Col>
                             <Form.Label>Kupac</Form.Label>
-                            <Form.Select name="kupacId" onChange={(e) => onInputChange(e)}>
+                            <Form.Select style={{ width: '300px' }} name="kupacId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
                                 {kupciSelect()}
                             </Form.Select>
@@ -185,7 +200,7 @@ const Trebovanja = () => {
                     <Row>
                         <Col>
                             <Form.Label>Roba</Form.Label>
-                            <Form.Select name="robaId" onChange={(e) => onInputChange(e)}>
+                            <Form.Select style={{ width: '300px' }} name="robaId" onChange={(e) => onInputChange(e)}>
                                 <option value={''}></option>
                                 {robaSelect()}
                             </Form.Select>
@@ -213,7 +228,7 @@ const Trebovanja = () => {
                     </Col>
                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button disabled={pageNo == 0} onClick={() => getTrebovanja(pageNo - 1)}>Prethodna</Button>
-                        <Button disabled={pageNo + 1 == totalPage || trebovanja.length == 0} onClick={() => getTrebovanja(pageNo + 1)}>Sledeca</Button>
+                        <Button style={{ marginLeft: '8px' }} disabled={pageNo + 1 == totalPage || trebovanja.length == 0} onClick={() => getTrebovanja(pageNo + 1)}>Sledeca</Button>
                     </Col>
                 </Row>
                 <br />
@@ -225,7 +240,7 @@ const Trebovanja = () => {
                             <th>Komercijalista</th>
                             <th>Kupac</th>
                             <th>Datum trebovanja</th>
-                            <th>Disponirano</th>
+                            <th>Isporučeno</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -240,5 +255,3 @@ const Trebovanja = () => {
 }
 
 export default Trebovanja
-
-// {window.localStorage.getItem('role') == 'ROLE_ADMIN' ?

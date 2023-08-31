@@ -2,8 +2,7 @@
 import { Button, Col, Row, Form, Table } from "react-bootstrap"
 import Axios from "../../apis/Axios"
 import { useCallback, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import KupacDodavanje from "../Kupci/KupacDodavanje"
+import { useNavigate } from "react-router-dom"
 
 const DodavanjeTrebovanja = () => {
 
@@ -27,34 +26,17 @@ const DodavanjeTrebovanja = () => {
         kupacDto: {}
     }
 
-
     //init
     const [trebovanje, setTrebovanje] = useState(initTrebovanje)
-    const [trebovanjeId, setTrebovanjeId] = useState('')
     const [trebovanjeRobe, setTrebovanjeRobe] = useState(initTrebovanjeRobe)
     const [trebovanaRoba, setTrebovanaRoba] = useState([])
-    const [listaRobe, setListaRobe] = useState([])
     const [roba, setRoba] = useState([])
     const [kupci, setKupci] = useState([])
     const [stanje, setStanje] = useState('')
-    const [komercijalisti, setKomercijalisti] = useState([])
     const [hidden, setHidden] = useState(false)
-    const [hiddenTabela, setHiddenTabela] = useState(false)
     const [hiddenFormaZaDodavanje, setHiddenFormaZaDodavanje] = useState(false)
     const [novoTrebovanje, setNovoTrebovanje] = useState(novoTrebovanjeInit)
     const [zavrsi, setZavrsi] = useState(false)
-
-    //brisanje 
-    const deleteTrebovanje = (id) => {
-        Axios.delete('/trebovanjaRobe/' + id)
-            .then(res => {
-                console.log(res);
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske, pokusajte ponovo!');
-            });
-    }
 
     const getTrebovanaRoba = useCallback((novoTrebovanjeId) => {
         Axios.get('/trebovanjaRobe/' + novoTrebovanjeId + '/trebovanja')
@@ -106,7 +88,6 @@ const DodavanjeTrebovanja = () => {
                 console.log(res)
                 setTrebovanjeRobe({ ...trebovanjeRobe, trebovanjeId: res.data.id })
                 getNovoTrebovanje(res.data.id)
-                // alert('Uspesno dodavanje!')
                 setHidden(!hidden)
                 setHiddenFormaZaDodavanje(!hiddenFormaZaDodavanje)
             })
@@ -150,7 +131,7 @@ const DodavanjeTrebovanja = () => {
     }, []);
 
 
-    const getKupci = useCallback((komercijalistaId) => {
+    const getKupci = useCallback(() => {
         Axios.get('/kupci/' + window.localStorage.getItem('korisnikId') + '/komercijala')
             .then(res => {
                 console.log(res);
@@ -162,22 +143,9 @@ const DodavanjeTrebovanja = () => {
             });
     }, []);
 
-    const getKomercijala = useCallback(() => {
-        Axios.get('/korisnici/komercijala')
-            .then(res => {
-                console.log(res);
-                setKomercijalisti(res.data)
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske!')
-            });
-    }, []);
-
     useEffect(() => {
         getRoba()
         getKupci()
-        getKomercijala()
     }, [])
 
 
@@ -209,21 +177,10 @@ const DodavanjeTrebovanja = () => {
                     <td>{roba.robaPakovanje}</td>
                     <td>{roba.robaJedinicaMere}</td>
                     <td>{roba.kolicina}</td>
-                    {/* <td><Button variant="danger" onClick={() => deleteTrebovanje(roba.id)}>Obrisi</Button></td> */}
                 </tr>
             )
         })
     }
-
-
-    //validacija
-    // const validiraj = () => {
-    //     if (vino.ime == '' || vino.opis == '') {
-    //         setValidno(false)
-    //     } else {
-    //         setValidno(true)
-    //     }
-    // }
 
     //onChange
     const inputValueChange = (e) => {
@@ -234,7 +191,6 @@ const DodavanjeTrebovanja = () => {
         trebovanjeCopy[name] = value
         setTrebovanje(trebovanjeCopy)
         console.log(trebovanje)
-        // validiraj()
     }
 
     const trebovanjeRobeInputValueChange = (e) => {
@@ -245,21 +201,17 @@ const DodavanjeTrebovanja = () => {
         trebovanjeRobeCopy[name] = value
         setTrebovanjeRobe(trebovanjeRobeCopy)
         getTrebovaniProizvod(e.target.value)
-        // validiraj()
     }
 
     const kolicinaTrebovaneRobeInputValueChange = (e) => {
         let input = e.target
         let name = input.name
         let value = input.value
-        let trebovanjeRobeCopy = trebovanjeRobe
-        setTrebovanjeRobe(prevState => ({   //This approach will make sure that you're always working with the latest state when updating individual fields.
+        setTrebovanjeRobe(prevState => ({
             ...prevState,
             [name]: value
         }))
-        // validiraj()
     }
-
 
     const formaZaDodavanje = () => {
         return (
@@ -273,32 +225,39 @@ const DodavanjeTrebovanja = () => {
                     </p>
                 </div>
                 <Form hidden={hiddenFormaZaDodavanje}>
-                    <Button variant="warning" onClick={() => navigate('/kupci/dodavanje')}>Dodaj kupca</Button>
+                    <Button variant="warning" onClick={() => navigate('/kupci/dodavanje')}>Dodaj novog kupca</Button>
                     <br /><br />
-                    <Row>
-                        <Col>
+                    <Row style={{ display: 'flex', alignItems: 'flex-end' }}>
+                        <Col style={{ marginRight: '-60px' }}>
                             <Form.Label htmlFor="kupacId">Kupac</Form.Label>
-                            <Form.Select name="kupacId" onChange={(e) => inputValueChange(e)}>
+                            <Form.Select style={{ width: '400px' }} name="kupacId" onChange={(e) => inputValueChange(e)}>
                                 <option value={""}></option>
                                 {kupciSelect()}
                             </Form.Select>
+                        </Col>
+                        <Col>
                             <br /> <Button onClick={dodaj} > Kreiraj trebovanje </Button>
                         </Col>
                     </Row>
                 </Form>
                 <br />
+
+
                 <Form hidden={!hidden}>
-                    <Row>
+                    <Row style={{ display: 'flex', alignItems: 'flex-end' }}>
                         <Col>
                             <Form.Label htmlFor="robaId">Proizvod</Form.Label>
-                            <Form.Select value={trebovanjeRobe.robaId} name="robaId" onChange={(e) => trebovanjeRobeInputValueChange(e)}>
+                            <Form.Select style={{ width: '400px' }} value={trebovanjeRobe.robaId} name="robaId" onChange={(e) => trebovanjeRobeInputValueChange(e)}>
                                 <option value={""}></option>
                                 {robaSelect()}
                             </Form.Select>
+                        </Col>
+                        <Col style={{ marginRight: '-150px' }}>
                             <Form.Label htmlFor="kolicina">Kolicina</Form.Label>
-                            <Form.Control value={trebovanjeRobe.kolicina} name="kolicina" id="kolicina" placeholder={stanje} type="number" onChange={(e) => kolicinaTrebovaneRobeInputValueChange(e)} />
-
-                            <br /> <Button onClick={dodajTrebovanejRobe}>  Dodaj </Button>
+                            <Form.Control style={{ width: '100px' }} value={trebovanjeRobe.kolicina} name="kolicina" id="kolicina" placeholder={stanje} type="number" onChange={(e) => kolicinaTrebovaneRobeInputValueChange(e)} />
+                        </Col>
+                        <Col>
+                            <Button disabled={trebovanjeRobe.kolicina == 0} onClick={dodajTrebovanejRobe}>  Dodaj </Button>
                         </Col>
                     </Row>
 
@@ -331,7 +290,7 @@ const DodavanjeTrebovanja = () => {
                         {trebovanaRobaIspis()}
                     </tbody>
                 </Table>
-                <br />{zavrsi ? <Button variant="success" onClick={() => navigate('/trebovanja')} disabled={trebovanaRoba.length == 0}> Zavrsi</Button> : null}
+                <br />{zavrsi ? <Button variant="success" onClick={() => navigate('/trebovanja')} disabled={trebovanaRoba.length == 0}> Završi</Button> : null}
 
             </Col>
             <Col></Col>

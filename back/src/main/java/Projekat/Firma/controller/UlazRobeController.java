@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,6 +69,7 @@ public class UlazRobeController {
 		return new ResponseEntity<> (kolicina, HttpStatus.OK); 
 	}
 	
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@DeleteMapping(value = "/{id}") 
 	public ResponseEntity<Void> delete (@PathVariable Long id){
 		UlazRobe ulazRobe = ulazRobeService.findOne(id);
@@ -78,6 +80,7 @@ public class UlazRobeController {
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);		
 	}
 	
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@PostMapping (value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UlazRobeDto> create (@PathVariable Long id, @Valid @RequestBody UlazRobeDto ulazRobeDto){
 		Ulaz ulaz = ulazService.findOne(id);
@@ -95,6 +98,7 @@ public class UlazRobeController {
 		return new ResponseEntity<UlazRobeDto>(toUlazRobeDto.convert(noviUlazRobe), HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@PutMapping (value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UlazRobeDto> update (@PathVariable Long id, @Valid @RequestBody UlazRobeDto ulazRobeDto){
 		if(ulazRobeDto.getId() != id) {

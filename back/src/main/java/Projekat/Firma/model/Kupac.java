@@ -22,10 +22,10 @@ public class Kupac {
 	@Column
 	private String naziv; //ime i prezime ili firma
 	
-	@Column
+	@Column(unique = true)
 	private String pib;
 	
-	@Column
+	@Column(unique = true)
 	private String mb;
 	
 	@Column

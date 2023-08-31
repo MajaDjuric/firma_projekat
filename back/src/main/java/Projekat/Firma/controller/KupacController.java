@@ -43,12 +43,14 @@ public class KupacController {
 	@Autowired
 	private KupacToKupacDto toKupacDto;
 
+    @PreAuthorize("permitAll()") 
 	@GetMapping
 	public ResponseEntity<List<KupacDto>> getAll (){
 		List<Kupac> kupci= kupacService.findAll();
 		return new ResponseEntity<> (toKupacDto.convert(kupci), HttpStatus.OK);
 	}
 
+    @PreAuthorize("permitAll()") 
 	@GetMapping(value = "/{id}/komercijala")
 	public ResponseEntity<List<KupacDto>> getByKomercijalistaId (@PathVariable Long id){
 		List<Kupac> kupci= kupacService.findByKomercijalistaId(id);
@@ -65,18 +67,7 @@ public class KupacController {
 		return new ResponseEntity<>(toKupacDto.convert(kupac), HttpStatus.OK);
 	}
 	
-    @PreAuthorize("permitAll()")
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete (@PathVariable Long id){
-		Kupac kupac = kupacService.findOne(id);
-		if (kupac == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		kupacService.delete(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-	
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('KOMERCIJALA')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KupacDto> create (@Valid @RequestBody KupacDto kupacDto){
 		Kupac kupac = toKupac.convert(kupacDto);
@@ -84,7 +75,7 @@ public class KupacController {
 		return new ResponseEntity<>(toKupacDto.convert(noviKupac), HttpStatus.CREATED);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('KOMERCIJALA')")
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<KupacDto> update (@PathVariable Long id, @RequestBody KupacDto kupacDto){
 		if (kupacDto.getId() != id) {

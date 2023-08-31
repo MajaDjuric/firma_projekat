@@ -15,7 +15,6 @@ const Dodavanje = () => {
         vrstaId: '',
         tipId: '',
         proizvodjacId: '',
-        ulaznaCena: '',
         prodajnaCena: '',
         pakovanje: '',
         jedinicaMere: '',
@@ -26,7 +25,6 @@ const Dodavanje = () => {
     const [vrste, setVrste] = useState([])
     const [proizvodjaci, setProizvodjaci] = useState([])
     const [tipovi, setTipovi] = useState([])
-    const [validno, setValidno] = useState(false)
 
     //dodavanje 
     const dodaj = () => {
@@ -47,7 +45,7 @@ const Dodavanje = () => {
             .then(res => {
                 console.log(res)
                 alert('Uspesno dodavanje!')
-                navigate('/roba')
+                navigate('/ulazi')
             })
             .catch(error => {
                 console.log(error)
@@ -123,15 +121,6 @@ const Dodavanje = () => {
         })
     }
 
-    //validacija
-    // const validiraj = () => {
-    //     if (vino.ime == '' || vino.opis == '') {
-    //         setValidno(false)
-    //     } else {
-    //         setValidno(true)
-    //     }
-    // }
-
     //onChange
     const inputValueChange = (e) => {
         let input = e.target
@@ -140,14 +129,12 @@ const Dodavanje = () => {
         let robaSt = roba
         robaSt[name] = value
         setRoba(robaSt)
-        // validiraj()
     }
 
     const vrstaOnChange = (e) => {
         let vrstaId = e.target.value
         setRoba({ ...roba, vrstaId: vrstaId })
         getTipovi(vrstaId)
-        // validiraj()
     }
 
     //krajnji ispis

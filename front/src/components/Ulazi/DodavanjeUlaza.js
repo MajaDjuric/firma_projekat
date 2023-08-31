@@ -1,14 +1,9 @@
-
-import { Button, Col, Row, Form, Table } from "react-bootstrap"
+import { Button, Col, Row, Form } from "react-bootstrap"
 import Axios from "../../apis/Axios"
 import { useCallback, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import DodavanjeRobeUlaz from "./DodavanjeRobeUlaz"
 
 const DodavanjeUlaza = () => {
-
-    //navigate
-    const navigate = useNavigate()
 
     const init = {
         brojFakture: '',
@@ -24,13 +19,10 @@ const DodavanjeUlaza = () => {
         proizvodjacId: ''
     }
 
-    //init
-
     const [ulaz, setUlaz] = useState([init])
     const [noviUlaz, setNoviUlaz] = useState([initNoviUlaz])
     const [id, setId] = useState(0)
     const [proizvodjaci, setProizvodjaci] = useState([])
-    const [validno, setValidno] = useState(false)
     const [hiddenDodavanjeRobe, setHiddenDodavanjeRobe] = useState(false)
     const [hiddenDodavanjeUlaza, setHiddenDodavanjeUlaza] = useState(false)
 
@@ -95,16 +87,6 @@ const DodavanjeUlaza = () => {
         })
     }
 
-
-    //validacija
-    // const validiraj = () => {
-    //     if (vino.ime == '' || vino.opis == '') {
-    //         setValidno(false)
-    //     } else {
-    //         setValidno(true)
-    //     }
-    // }
-
     //onChange
     const inputValueChange = (e) => {
         let input = e.target
@@ -113,7 +95,6 @@ const DodavanjeUlaza = () => {
         let ulazCopy = ulaz
         ulazCopy[name] = value
         setUlaz(ulazCopy)
-        // validiraj()
     }
 
     const formatirajDatum = (datumParam) => {

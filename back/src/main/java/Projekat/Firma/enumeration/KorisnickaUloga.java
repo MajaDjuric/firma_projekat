@@ -6,6 +6,5 @@ public enum KorisnickaUloga {
     LOGISTIKA,
     FINANSIJE,
     MAGACIN,
-    MALOPRODAJA,
     VOZAC
 }

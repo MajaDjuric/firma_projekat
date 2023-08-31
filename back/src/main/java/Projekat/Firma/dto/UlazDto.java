@@ -3,17 +3,26 @@ package Projekat.Firma.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 public class UlazDto {
 
 	private Long id;
+	
+	@NotNull
 	private String datumUlaza;
+	
+	@NotNull
 	private String brojFakture;
+	
+	@NotNull
 	private String brojOtpremnice;
-//	private int kolicina;
-//	private double cenaPoJediniciMere;
-//	private double rabat;
+	
+	@NotNull
 	private Long proizvodjacId;
-	private String proizvodjacNaziv;
+	
+	private String proizvodjacNaziv; 
+	
 	private List<RobaDto> roba = new ArrayList<>();
 	
 	public Long getId() {
@@ -21,7 +30,7 @@ public class UlazDto {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
+	} 
 	public String getDatumUlaza() {
 		return datumUlaza;
 	}

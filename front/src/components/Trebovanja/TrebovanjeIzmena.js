@@ -25,10 +25,7 @@ const IzmenaTrebovanja = () => {
     const [trebovanje, setTrebovanje] = useState(trebovanjeInit)
     const [kolicina, setKolicina] = useState(0)
     const [trebovanjaRobeIds, setTrebovanjaRobeIds] = useState([])
-    const [izmenaButton, setIzmenaButton] = useState(false)
     const [svaTrebovanjaRobeIds, setSvaTrebovanjaRobeIds] = useState([]) //props za dopunu
-    const [validno, setValidno] = useState(false)
-
 
     //dodavanje trebovanja u dispoziciju
     const dodajTrebovanje = () => {
@@ -51,22 +48,6 @@ const IzmenaTrebovanja = () => {
                 alert('Doslo je do greske, pokusajte ponovo!');
             });
     }
-
-
-    //brisanje 
-    const deleteTrebovanja = (trebovanjeId) => {
-        Axios.delete('/trebovanja/' + trebovanjeId)
-            .then(res => {
-                console.log(res);
-                alert('Uspesno brisanje!');
-                navigate('/trebovanja')
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske, pokusajte ponovo!');
-            });
-    }
-
 
     const deleteTrebovanje = (id) => {
         Axios.delete('/trebovanjaRobe/' + id)
@@ -134,7 +115,6 @@ const IzmenaTrebovanja = () => {
     //onChange
     const kolicinaOnChange = (e) => {
         setKolicina(e.target.value)
-        setIzmenaButton(true)
     }
 
 
@@ -155,41 +135,29 @@ const IzmenaTrebovanja = () => {
         return trebovanjaRobe.map((trebovanjeRobe, index) => {
             return (
                 <tr onClick={() => trebovanjeRobe.disponirano ? window.open('/#/dispozicija/' + trebovanjeRobe.dispozicijaId) : null} key={trebovanjeRobe.id} >
-
+                    {
+                        window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && !trebovanjeRobe.disponirano && dispozicijaId != 'undefined' ? < td > <FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> : <td></td>
+                    }
                     <td>{index + 1}</td>
                     <td>{trebovanjeRobe.robaNaziv}</td>
                     <td>{trebovanjeRobe.robaPakovanje}</td>
                     <td >{trebovanjeRobe.robaJedinicaMere}</td>
                     {
-                        window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanjeRobe.disponirano ? <td><Form.Control style={{ width: 120 }} placeholder={trebovanjeRobe.kolicina}
+                        window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanjeRobe.disponirano ? <td><Form.Control style={{ width: '75px' }} placeholder={trebovanjeRobe.kolicina}
                             name="kolicina" type="number" onChange={(e) => kolicinaOnChange(e)} /></td> : <td> {trebovanjeRobe.kolicina}</td>
                     }
                     {trebovanjeRobe.disponirano ? <td><FormCheck checked /> </td> : <td></td>}
                     {trebovanjeRobe.isporuceno ? <td><FormCheck checked /> </td> : <td></td>}
                     {
                         window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanjeRobe.disponirano ?
-                            (<> <td><Button style={{ marginRight: '10px' }} variant="warning" disabled={!izmenaButton} onClick={() => izmeni(trebovanjeRobe.id)}>Izmeni</Button>
-                                <Button variant="danger" onClick={() => deleteTrebovanje(trebovanjeRobe.id)}>Obrisi</Button></td>
+                            (<> <td><Button style={{ marginRight: '10px' }} variant="warning" onClick={() => izmeni(trebovanjeRobe.id)}>Izmeni</Button></td>
+                                <td><Button variant="danger" onClick={() => deleteTrebovanje(trebovanjeRobe.id)}>Obrisi</Button></td>
                             </>) : null
                     }
-                    {
-                        window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && !trebovanjeRobe.disponirano ? < td > <FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td> : null
-                    }
-                    {/* {trebovanjeRobe.disponirano ? <td> <Button variant="success" onClick={() => navigate('/dispozicija/' + trebovanjeRobe.dispozicijaId)} >Pogledaj dispoziciju</Button></td> : null} */}
                 </tr >
             )
         })
     }
-
-    //  //validacija
-    // const validiraj = () => {
-    //     if (zadatak.ime == '' || zadatak.zaduzeni == '') {
-    //         setValidno(false)
-    //     } else {
-    //          setValidno(true)
-    //     }
-    //  }
-
 
     //krajnji ispis
     return (
@@ -207,6 +175,7 @@ const IzmenaTrebovanja = () => {
                 <Table style={{ marginTop: 5 }}>
                     <thead>
                         <tr>
+                            <th></th>
                             <th >Redni broj</th>
                             <th>Naziv proizvoda</th>
                             <th>Pakovanje</th>
@@ -226,12 +195,9 @@ const IzmenaTrebovanja = () => {
             <Col></Col>
 
             <Row>
-
                 <Col></Col>
-
                 <Col xs="12" sm="10" md="8">
                     <br />  <br />
-                    {/* {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <h4>Dopuna trebovanja</h4> : null} */}
                     <br /> {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanje.disponirano ? <Col ><Dopuna svaTrebovanjaRobeIds={svaTrebovanjaRobeIds} trebovanjeId={trebovanjeId}></Dopuna></Col> : null}
                 </Col>
                 <Col></Col>
@@ -240,9 +206,7 @@ const IzmenaTrebovanja = () => {
             <Row>
                 <Col></Col>
                 <Col xs="12" sm="10" md="8">
-                    <br />
-                    {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' && !trebovanje.disponirano ? <Button variant="danger" onClick={() => deleteTrebovanja(trebovanjeId)} >Obrisi trebovanje</Button> : null}
-                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && !trebovanje.disponirano ? <Button variant="success" disabled={trebovanjaRobe.length == 0} onClick={() => dodajTrebovanje()}>Dodaj u dispoziciju</Button> : null}
+                    {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' && dispozicijaId != 'undefined' ? <Button variant="success" disabled={trebovanjaRobe.length == 0} onClick={() => dodajTrebovanje()}>Dodaj u dispoziciju</Button> : null}
                 </Col>
                 <Col></Col>
             </Row>

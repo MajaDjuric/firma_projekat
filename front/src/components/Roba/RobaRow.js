@@ -1,7 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import Axios from "../../apis/Axios";
 import { Button, FormControl } from "react-bootstrap";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 
 const RobaRow = (props) => {
@@ -10,23 +9,6 @@ const RobaRow = (props) => {
 
     const [prodajnaCena, setProdajnaCena] = useState(props.roba.prodajnaCena)
     const [izmenaButton, setIzmenaButton] = useState(false)
-
-    ///navigate
-    var navigate = useNavigate()
-
-    //brisanje 
-    const deleteRoba = () => {
-        Axios.delete('/roba/' + robaId)
-            .then(res => {
-                console.log(res);
-                alert('Uspesno brisanje!');
-                window.location.reload();
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske, pokusajte ponovo!');
-            });
-    }
 
     const izmenaProdajneCene = () => {
 
@@ -65,7 +47,7 @@ const RobaRow = (props) => {
             <td>{props.roba.izlaz}</td>
             <td>{props.roba.stanje}</td>
             {
-                window.localStorage.getItem('role') == 'ROLE_FINANSIJE' ? <td><FormControl style={{ width: '120px' }} onChange={(e) => prodajnaCenaOnChange(e)} value={prodajnaCena.toFixed(2)}
+                window.localStorage.getItem('role') == 'ROLE_FINANSIJE' ? <td><FormControl style={{ width: '120px' }} onChange={(e) => prodajnaCenaOnChange(e)} placeholder={props.roba.prodajnaCena.toFixed(2)}
                     name="prodajnaCena" type="number" /> </td> : <td>{props.roba.prodajnaCena.toFixed(2)}</td>
             }
             {window.localStorage.role == 'ROLE_FINANSIJE' ? <td><Button variant="warning" disabled={!izmenaButton} onClick={izmenaProdajneCene}>Izmeni</Button></td> : null}

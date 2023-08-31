@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Axios from "../../apis/Axios";
-import { Button } from "react-bootstrap";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 const UlazRow = (props) => {
@@ -12,20 +11,6 @@ const UlazRow = (props) => {
     ///navigate
     var navigate = useNavigate()
     const [kolicina, setKolicina] = useState('')
-
-    //brisanje 
-    const deleteUlaz = () => {
-        Axios.delete('/ulazi/' + ulazId)
-            .then(res => {
-                console.log(res);
-                alert('Uspesno brisanje!');
-                window.location.reload();
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Doslo je do greske, pokusajte ponovo!');
-            });
-    }
 
     //dobavljanje kolicine kod pretrage po nazivu robe
     const getKolicina = () => {

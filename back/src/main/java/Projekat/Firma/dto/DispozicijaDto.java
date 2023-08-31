@@ -2,13 +2,22 @@ package Projekat.Firma.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 public class DispozicijaDto {
 
 	private Long id;
+	@NotNull
 	private String datumIsporuke;
+	
+	@NotNull
 	private Long vozacId;
+	
 	private String vozacImeIPrezime;
+	
+	@NotNull
 	private VoziloDto vozilo;
+	
 	private boolean isporuceno;
 	private List<Long> trebovanjaIds;
 	private List<TrebovanjeRobeDto> trebovanjaRobe;

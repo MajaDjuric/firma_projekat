@@ -2,6 +2,8 @@ package Projekat.Firma.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 public class TrebovanjeDto {
 
 	private Long id;
@@ -11,6 +13,8 @@ public class TrebovanjeDto {
 	private boolean disponirano;
 	private boolean isporuceno;
 	private String datumTrebovanja;
+	
+	@NotNull
 	private KupacDto kupacDto;
 	
 	public KupacDto getKupacDto() {

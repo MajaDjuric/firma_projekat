@@ -1,14 +1,9 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Axios from "../../apis/Axios";
-import { Button, Form, FormCheck } from "react-bootstrap";
-import React, { useCallback, useEffect, useState } from "react";
-
+import { Button, FormCheck } from "react-bootstrap";
 
 const TrebovanjeRow = (props) => {
 
-    // const ulazId = props.ulaz.id;
-
-    // ///navigate
     var navigate = useNavigate()
 
     var trebovanjeId = props.trebovanje.id
@@ -35,7 +30,6 @@ const TrebovanjeRow = (props) => {
             <td onClick={() => navigate('/trebovanje/izmena/' + trebovanjeId)}>{props.trebovanje.kupacDto.naziv}</td>
             {window.localStorage.getItem('role') == 'ROLE_LOGISTIKA' ? <td><FormCheck></FormCheck></td> : null}
             {window.localStorage.getItem('role') == 'ROLE_KOMERCIJALA' ? <td><Button variant="danger" onClick={deleteTrebovanje}>Obrisi</Button></td> : null}
-            {/* <td>props.trebovanje.id</td> */}
         </tr>
     )
 }

@@ -1,6 +1,6 @@
 import Axios from '../../apis/Axios';
 import React, { useCallback, useEffect, useState } from "react"
-import { Button, Col, Form, Row, Table, FormCheck } from "react-bootstrap"
+import { Button, Col, Row, Table, FormCheck } from "react-bootstrap"
 import { useNavigate, useParams } from 'react-router-dom';
 
 
@@ -23,7 +23,6 @@ const Dispozicija = () => {
     const [dispozicija, setDispozicija] = useState(init)
     const [trebovanjaRobe, setTrebovanjaRobe] = useState([])
     const [trebovanjaRobeIds, setTrebovanjaRobeIds] = useState([])
-    const [hidden, setHidden] = useState(false)
 
 
     //dobavljanje svih
@@ -69,7 +68,6 @@ const Dispozicija = () => {
             .then(res => {
                 console.log(res);
                 console.log(requestBody)
-                alert('Uspesno!')
                 navigate('/dispozicije')
             })
             .catch(error => {
@@ -114,9 +112,9 @@ const Dispozicija = () => {
 
     const ipsisCheckBoxIliBrisanje = (trebovanjeRobe) => {
         if (!trebovanjeRobe.isporuceno && window.localStorage.getItem('role') == 'ROLE_MAGACIN') {
-            return <td><FormCheck style={{ display: "flex", justifyContent: "center" }} value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td>
+            return <td><FormCheck value={trebovanjeRobe.id} onChange={(e) => trebovanjaInputChange(e)} ></FormCheck></td>
         } else if (trebovanjeRobe.isporuceno && (window.localStorage.getItem('role') == 'ROLE_MAGACIN' || window.localStorage.getItem('role') == 'ROLE_LOGISTIKA')) {
-            return <td><FormCheck style={{ display: "flex", justifyContent: "center" }} checked></FormCheck></td>
+            return <td><FormCheck checked></FormCheck></td>
         } else if (!dispozicija.isporuceno && window.localStorage.getItem('role') == 'ROLE_LOGISTIKA') {
             return <td><Button variant='danger' onClick={() => deleteTrebovanjeRobe(trebovanjeRobe.id)} >Obrisi</Button></td>
         }
@@ -149,7 +147,8 @@ const Dispozicija = () => {
                                 <th>Proizvod</th>
                                 <th>Pakovanje</th>
                                 <th>Jedinica mere</th>
-                                <th>Kolicina</th>
+                                <th>Količina</th>
+                                {window.localStorage.getItem('role') == 'ROLE_MAGACIN' ? <th>Isporučeno</th> : null}
                             </tr>
                         </thead>
 
@@ -169,7 +168,6 @@ const Dispozicija = () => {
         });
     };
 
-
     //krajnji ispis
     return (
         <Col>
@@ -186,11 +184,9 @@ const Dispozicija = () => {
                 </p>
 
                 <Table style={{ marginTop: 5 }}>
-                    {/* <tbody> */}
                     {trebovanjaRobeRender()}
-                    {/* </tbody> */}
                 </Table>
-                {window.localStorage.getItem('role') == 'ROLE_MAGACIN' ? <Button onClick={() => setIsporuceno()} >Zavrsi </Button> : null}
+                {window.localStorage.getItem('role') == 'ROLE_MAGACIN' ? <td><Button onClick={() => setIsporuceno()} >Završi </Button></td> : null}
             </Col>
             </Row>
         </Col>
@@ -198,5 +194,3 @@ const Dispozicija = () => {
 }
 
 export default Dispozicija
-
-// {window.localStorage.getItem('role') == 'ROLE_ADMIN' ?

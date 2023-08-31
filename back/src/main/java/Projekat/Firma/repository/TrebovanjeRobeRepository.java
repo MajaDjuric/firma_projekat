@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import Projekat.Firma.model.Trebovanje;
 import Projekat.Firma.model.TrebovanjeRobe;
 
 @Repository

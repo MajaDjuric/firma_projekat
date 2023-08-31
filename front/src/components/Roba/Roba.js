@@ -118,9 +118,6 @@ const Roba = (props) => {
                     <Form.Label htmlFor='checkbox'> &nbsp; Prikazi pretragu</Form.Label>
                 </div>
 
-                {/* <Form  hidden={!hidden} > */}
-                {/* ako hocu obrnuto sklonim ! */}
-
                 <Form hidden={!hidden}>
                     <Row>
                         <Col>
@@ -151,11 +148,9 @@ const Roba = (props) => {
                             </Col>
                         </Row> : null}
                 </Form>
-
             </>
         )
     }
-
 
     //krajnji ispis
     return (
@@ -172,7 +167,7 @@ const Roba = (props) => {
                     </Col>
                     <Col style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button disabled={pageNo == 0} onClick={() => getRoba(pageNo - 1)}>Prethodna</Button>
-                        <Button disabled={pageNo + 1 == totalPage || robas.length == 0} onClick={() => getRoba(pageNo + 1)}>Sledeca</Button>
+                        <Button style={{ marginLeft: '8px' }} disabled={pageNo + 1 == totalPage || robas.length == 0} onClick={() => getRoba(pageNo + 1)}>Sledeca</Button>
                     </Col>
                 </Row>
 
@@ -190,7 +185,6 @@ const Roba = (props) => {
                             <th>Izlaz</th>
                             <th>Stanje</th>
                             <th colSpan={2} >Prodajna cena</th>
-                            {/* {window.localStorage.getItem('role') == 'ROLE_ADMIN' ? <th>Broj preostalih flasa</th> : null} */}
                         </tr>
                     </thead>
                     <tbody>
@@ -204,5 +198,3 @@ const Roba = (props) => {
 }
 
 export default Roba
-
-// {window.localStorage.getItem('role') == 'ROLE_ADMIN' ?

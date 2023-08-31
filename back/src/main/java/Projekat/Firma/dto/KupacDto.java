@@ -1,15 +1,35 @@
 package Projekat.Firma.dto;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 public class KupacDto {
 
 	private Long id;
+	
+	@NotNull
 	private String naziv;
+	
+	@NotNull
+	@Length(min = 9, max = 9)
 	private String pib;
+	
+	@NotNull
+	@Length(min = 8, max = 8)
 	private String mb;
+	
+	@NotNull
 	private String adresa;
+	
+	@NotNull
 	private String grad;
+	
+	@NotNull
 	private String teren;
+	
 	private Long komercijalistaId;
+	
 	private String komercijalistaImeIPrezime;
 	public Long getId() {
 		return id;

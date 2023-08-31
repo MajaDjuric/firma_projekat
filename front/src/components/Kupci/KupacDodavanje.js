@@ -1,7 +1,7 @@
 
 import { Button, Col, Row, Form } from "react-bootstrap"
 import Axios from "../../apis/Axios"
-import { useCallback, useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 
@@ -18,8 +18,6 @@ const KupacDodavanje = () => {
         grad: '',
         teren: ''
     }
-
-    //init
 
     const [kupac, setKupac] = useState([init])
     const [validno, setValidno] = useState(false)
@@ -49,14 +47,14 @@ const KupacDodavanje = () => {
             })
     }
 
-    //validacija
-    // const validiraj = () => {
-    //     if (vino.ime == '' || vino.opis == '') {
-    //         setValidno(false)
-    //     } else {
-    //         setValidno(true)
-    //     }
-    // }
+    // validacija
+    const validiraj = () => {
+        if (kupac.naziv == '' || kupac.adresa == '' || kupac.pib == '' || kupac.mb == '' || kupac.grad == '' || kupac.teren == '') {
+            setValidno(false)
+        } else {
+            setValidno(true)
+        }
+    }
 
     //onChange
     const inputValueChange = (e) => {
@@ -66,7 +64,7 @@ const KupacDodavanje = () => {
         let kupacCopy = kupac
         kupacCopy[name] = value
         setKupac(kupacCopy)
-        // validiraj()
+        validiraj()
     }
 
     return (
@@ -75,17 +73,17 @@ const KupacDodavanje = () => {
                 <Row>
                     <Col>
                         <Form.Label htmlFor="naziv">Naziv kupca</Form.Label>
-                        <Form.Control name="naziv" id="naziv" type="text" onChange={(e) => inputValueChange(e)} />
+                        <Form.Control style={{ width: '400px' }} name="naziv" id="naziv" type="text" onChange={(e) => inputValueChange(e)} />
                         <Form.Label htmlFor="pib">PIB </Form.Label>
-                        <Form.Control name="pib" id="pib" type="text" onChange={(e) => inputValueChange(e)} />
+                        <Form.Control style={{ width: '400px' }} name="pib" id="pib" type="text" onChange={(e) => inputValueChange(e)} />
                         <Form.Label htmlFor="mb">MB</Form.Label>
-                        <Form.Control name="mb" id="mb" type="text" onChange={(e) => inputValueChange(e)} />
+                        <Form.Control style={{ width: '400px' }} name="mb" id="mb" type="text" onChange={(e) => inputValueChange(e)} />
                         <Form.Label htmlFor="adresa">Adresa</Form.Label>
-                        <Form.Control name="adresa" id="adresa" type="text" onChange={(e) => inputValueChange(e)} />
+                        <Form.Control style={{ width: '400px' }} name="adresa" id="adresa" type="text" onChange={(e) => inputValueChange(e)} />
                         <Form.Label htmlFor="grad">Grad</Form.Label>
-                        <Form.Control name="grad" id="grad" type="text" onChange={(e) => inputValueChange(e)} />
+                        <Form.Control style={{ width: '400px' }} name="grad" id="grad" type="text" onChange={(e) => inputValueChange(e)} />
                         <Form.Label htmlFor="teren">Teren</Form.Label>
-                        <Form.Select name="teren" onChange={(e) => inputValueChange(e)}>
+                        <Form.Select style={{ width: '400px' }} name="teren" onChange={(e) => inputValueChange(e)}>
                             <option value={""}></option>
                             <option value={"Severna Bačka"}>Severna Bačka</option>
                             <option value={"Juzna Backa"}>Juzna Backa</option>
@@ -94,7 +92,7 @@ const KupacDodavanje = () => {
                             <option value={"Srem"}>Srem</option>
                             <option value={"Centralna Srbija"}>Centralna Srbija</option>
                         </Form.Select>
-                        <br /> <Button onClick={dodaj}> Dodaj kupca</Button>
+                        <br /> <Button disabled={!validno} onClick={dodaj}> Dodaj kupca</Button>
                     </Col>
                 </Row>
             </Form>

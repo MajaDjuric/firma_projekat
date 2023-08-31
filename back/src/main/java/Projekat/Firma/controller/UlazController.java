@@ -89,7 +89,7 @@ public class UlazController {
 		return new ResponseEntity<>(toUlazDto.convert(ulaz), HttpStatus.OK);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete (@PathVariable Long id){
 		Ulaz ulaz = ulazService.findOne(id);
@@ -100,7 +100,7 @@ public class UlazController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UlazDto> create (@Valid @RequestBody UlazDto ulazDto){
 		Ulaz ulaz = toUlaz.convert(ulazDto);
@@ -108,8 +108,7 @@ public class UlazController {
 		return new ResponseEntity<>(toUlazDto.convert(noviUlaz), HttpStatus.CREATED);
 	}
 	
-    @PreAuthorize("permitAll()")
-	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('FINANSIJE')")	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UlazDto> update (@PathVariable Long id, @RequestBody UlazDto ulazDto){
 		if (ulazDto.getId() != id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -119,7 +118,7 @@ public class UlazController {
 		return new ResponseEntity<>(toUlazDto.convert(izmenjeniUlaz), HttpStatus.OK);	
 	}
     
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('FINANSIJE')")
 	@PutMapping(value ="/dodavanje/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> dodavanjeRobeUlaz (@Valid @RequestBody List<RobaDto> robaDto, @PathVariable Long id){
     	Ulaz ulaz = ulazService.findOne(id);

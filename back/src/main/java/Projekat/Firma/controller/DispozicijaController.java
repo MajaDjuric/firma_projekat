@@ -26,10 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import Projekat.Firma.dto.DispozicijaDto;
-import Projekat.Firma.dto.TrebovanjeDto;
-import Projekat.Firma.dto.TrebovanjeRobeDto;
 import Projekat.Firma.model.Dispozicija;
-import Projekat.Firma.model.Roba;
 import Projekat.Firma.model.Trebovanje;
 import Projekat.Firma.model.TrebovanjeRobe;
 import Projekat.Firma.service.DispozicijaService;
@@ -37,10 +34,6 @@ import Projekat.Firma.service.TrebovanjeRobeService;
 import Projekat.Firma.service.TrebovanjeService;
 import Projekat.Firma.support.DispozicijaDtoToDispozicija;
 import Projekat.Firma.support.DispozicijaToDispozicijaDto;
-import Projekat.Firma.support.TrebovanjeDtoToTrebovanje;
-import Projekat.Firma.support.TrebovanjeRobeDtoToTrebovanjeRobe;
-import Projekat.Firma.support.TrebovanjeRobeToTrebodavnjeRobeDto;
-import Projekat.Firma.support.TrebovanjeToTrebovanjeDto;
 
 @RestController
 @RequestMapping(value = "api/dispozicije", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,6 +54,7 @@ public class DispozicijaController {
 	@Autowired
 	private TrebovanjeService trebovanjeService;
 
+    @PreAuthorize("permitAll()")
 	@GetMapping
 	public ResponseEntity<List<DispozicijaDto>> getAll (@RequestParam (required = false) String datumIsporuke,
 													    @RequestParam (required = false, defaultValue = "0") int pageNo){
@@ -93,13 +87,14 @@ public class DispozicijaController {
 		return new ResponseEntity<>(toDispozicijaDto.convert(page.getContent()), headers, HttpStatus.OK);
 	}
 	
+    @PreAuthorize("permitAll()")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<DispozicijaDto> getAll (@PathVariable Long id){
 		Dispozicija dispozicija = dispozicijaService.findOne(id);
 		return new ResponseEntity<>(toDispozicijaDto.convert(dispozicija), HttpStatus.OK);
 	}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('LOGISTIKA')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete (@PathVariable Long id){
 		Dispozicija dispozicija = dispozicijaService.findOne(id);
@@ -110,38 +105,15 @@ public class DispozicijaController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@PreAuthorize("permitAll()")
-		@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('LOGISTIKA')")
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<DispozicijaDto> create (@Valid @RequestBody DispozicijaDto dispozicijaDto){
 			Dispozicija dispozicija = toDispozicija.convert(dispozicijaDto);
 			Dispozicija novaDispozicija = dispozicijaService.save(dispozicija);
-//			List<Trebovanje> trebovanja = dispozicija.getTrebovanja();
-//			for (Trebovanje trebovanje : trebovanja) {
-//				trebovanje.setDispozicija(dispozicija);
-//				trebovanje.setDisponirano(true);
-//				Trebovanje updatedTrebovanje = trebovanjeService.update(trebovanje);
-//			}
 			return new ResponseEntity<>(toDispozicijaDto.convert(novaDispozicija), HttpStatus.CREATED);
 		}
 		
-//	@PreAuthorize("permitAll()")
-// 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-//		public ResponseEntity<DispozicijaDto> update (@PathVariable Long id, @RequestBody DispozicijaDto dispozicijaDto){
-//			if (dispozicijaDto.getId() != id) {
-//				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//			}
-//			Dispozicija dispozicija = toDispozicija.convert(dispozicijaDto);
-//			Dispozicija izmenjenaDispozicija = dispozicijaService.update(dispozicija);
-//			return new ResponseEntity<>(toDispozicijaDto.convert(izmenjenaDispozicija), HttpStatus.OK);	
-//		}
-//	
-//	public LocalDate getLocalDate (String datunString) {
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//		LocalDate datum = LocalDate.parse(datunString, dtf);
-//		return datum;
-//	}	
-	
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('LOGISTIKA')")
  	@PutMapping(value = "/{id}")
 		public ResponseEntity<DispozicijaDto> dodavanjeTrebovanjaUDispoziciju (@PathVariable Long id, @RequestBody Map<String, List<String>> requestBody){
 			Dispozicija dispozicija = dispozicijaService.findOne(id);
@@ -171,7 +143,7 @@ public class DispozicijaController {
 		}
 
 	
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('MAGACIN')")
  	@PutMapping(value = "/{id}/isporuceno")
 		public ResponseEntity<Void> setIsporucenaRoba (@PathVariable Long id, @RequestBody Map<String, List<String>> requestBody){
 			Dispozicija dispozicija = dispozicijaService.findOne(id);
@@ -206,11 +178,18 @@ public class DispozicijaController {
 			}
 			
 			dispozicija.setIsporuceno(true);
+			List<TrebovanjeRobe> svaTrebovanjaRobeUDispoziciji = dispozicija.getTrebovanjaRobe();
+			for (TrebovanjeRobe trebovanjeRobe : svaTrebovanjaRobeUDispoziciji) {
+				if (!trebovanjeRobe.isIsporuceno()) {
+					trebovanjeRobe.setDisponirano(false);
+					TrebovanjeRobe updated = trebovanjeRobeService.update(trebovanjeRobe);
+				}
+			}
 			Dispozicija updatedDispozicija = dispozicijaService.update(dispozicija);
 			return new ResponseEntity<>(HttpStatus.OK);	
 		}
 	
-    @PreAuthorize("permitAll()")
+	@PreAuthorize("hasRole('LOGISTIKA')")
 	@DeleteMapping(value = "/brisanjeTrebovanjaRobe/{id}")
 	public ResponseEntity<Void> deleteTrebovanjeRobeIzDispozicije (@PathVariable Long id){
     	TrebovanjeRobe trebovanjeRobe = trebovanjeRobeService.findOne(id);
