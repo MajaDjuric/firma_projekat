@@ -16,11 +16,11 @@ osnovu uloge u firmi ima pristup određenim podacima i funkcionalnostima.
   
  * Trebovanja:<br>
    Prikaz detalja jednog trebovanja: klik bilo gde unutar reda u tabeli<br>
-   Komercijala: <br>
-  - Dodavanje novog trebovanja (u padajućem meniju izabere se kupac (učitavaju se samo kupci ulogovanog komercijaliste) i<br>
+   Komercijala:
+    - Dodavanje novog trebovanja (u padajućem meniju izabere se kupac (učitavaju se samo kupci ulogovanog komercijaliste) i<br>
     potvrđuje se klikom na “Kreiraj trebovanje”, nakon čega se dodaju proizvodi i količine u trebovanja i potvrđuju klikom na dugme “Završi”
-   - brisanje 
-   - dopuna (Pri dodavanju određenog proizvoda u trebovanje, u polju za količinu se ispisuje količina tog proizvoda na stanju)
+     - brisanje 
+     - dopuna (Pri dodavanju određenog proizvoda u trebovanje, u polju za količinu se ispisuje količina tog proizvoda na stanju)
     - izmena trebovane količine (u polje u koloni količina unese se nova količina i potvrđuje se klikom na dugme izmeni)
     - brisanje pojedinačnih proizvoda iz trebovanja
     - dodavanje novog kupca (mb mora imati 8, pib 9 brojeva)
@@ -29,18 +29,21 @@ osnovu uloge u firmi ima pristup određenim podacima i funkcionalnostima.
 
   * Dispozicije (nalozi za isporuku robe kupcima): <br>
   Logistika:<br>
-   - Kreiranje nove dispozicije (dugme “Kreiraj dispoziciju”)<br>
-   - Dodavanje proizvoda iz trebovanja u dispoziciju (dugme “Dodaj trebovanja”, označavanje checkbox-a proizvoda koji se <br>
-    dodaje u dispoziciju, i potvrda klikom na dugme “Dodaj u dispoziciju”) (Nakon ovog postupka u prikazu detalja trebovanja čekiran je checkbox u koloni “Disponirano”)
-   - Uklanjanje proizvoda ukoliko dispozicija tj. isporuka robe nije već obavljena(Nakon ovog postupka u prikazu detalja trebovanja checkbox u koloni “Disponirano” nije više čekiran)
-  
-  Magacin: <br>
-    Nakon što logistika kreira dispoziciju, magacin ima uvid u nju, i nakon isporuke robe, magacin potvrđuje koja roba je stigla do kupca tj. koja roba je isporučena, a koja nije.
-    -	Klik na dugme “Detaljnije”, čekiranje checkbox-a u koloni “Isporučeno” i klik na dugme “Završi”	(Nakon ovog postupka u tabeli “Trebovanja”, ukoliko  su svi proizvodi iz trebovanja isporučena, 
-      u koloni “Isporučeno” pojavljuje se čekirani checkbox. Ukoliko neki proizvod iz datog trebovanja  <br> nije isporučen, a bio je u dispoziciji, njegovo stanje u koloni “Disponirano” se vraća na početno, <br>
-     kako bi logistika pri kreiranju nove dispozicije imala uvid da ta roba nije isporučena <br>
-    Nakon ovog postupka, logistika više nema mogućnost da dodaje trebovanja u dispoziciju, a pregledom detalja imauvid koja roba je isporučena, a koja ne (radi lakšeg uočavanja neisporučene robe, tekst  <br>
-    u toj koloni postaje crven) 
+     - Kreiranje nove dispozicije (dugme “Kreiraj dispoziciju”)<br>
+     - Dodavanje proizvoda iz trebovanja u dispoziciju (dugme “Dodaj trebovanja”, označavanje checkbox-a proizvoda koji se <br>
+      dodaje u dispoziciju, i potvrda klikom na dugme “Dodaj u dispoziciju”) (Nakon ovog postupka u prikazu detalja trebovanja čekiran je checkbox u koloni “Disponirano”)
+     - Uklanjanje proizvoda ukoliko dispozicija tj. isporuka robe nije već obavljena(Nakon ovog postupka u prikazu detalja trebovanja checkbox u koloni “Disponirano” nije više čekiran)
+ 
+  * Dispozicije: <br>
+   Magacin: <br>
+      - Nakon što logistika kreira dispoziciju, magacin ima uvid u nju, i nakon isporuke robe, magacin potvrđuje koja roba je stigla do kupca tj. koja roba je isporučena, a koja nije. <br>
+      -	Klik na dugme “Detaljnije”, čekiranje checkbox-a u koloni “Isporučeno” i klik na dugme “Završi”	(Nakon ovog postupka u tabeli “Trebovanja”, ukoliko  su svi proizvodi iz trebovanja isporučena, 
+    u koloni “Isporučeno” pojavljuje se čekirani checkbox. 
+     - Ukoliko neki proizvod iz datog trebovanja nije isporučen, a bio je u dispoziciji, njegovo stanje u koloni “Disponirano” se vraća na početno, kako bi logistika pri kreiranju nove dispozicije imala uvid 
+da ta roba nije isporučena     <br>
+     - Nakon ovog postupka, logistika više nema mogućnost da dodaje trebovanja u dispoziciju, a pregledom detalja ima uvid koja roba je isporučena, a koja ne (radi lakšeg uočavanja neisporučene robe, tekst 
+        u toj koloni postaje crven) 
+        
 
  * Ulazi: <br>
     -  Ukoliko roba koja je stigla ne postoji u sistemu, Finansije mogu prvo da unesu novu robu u sistem (klik na dugme “Dodaj proizvod” kod prikaza robe), a potom da unesu ulaz te robe <br>
